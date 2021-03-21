@@ -43,6 +43,7 @@ app.use("/auth", userRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
+
 app.get("/bye", (req, res) => {
   res.json({ message: "bye" });
 });

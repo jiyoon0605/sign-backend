@@ -1,3 +1,5 @@
+require("dotenv").config({ path: "../../.env" });
+const nodemailer = require("nodemailer");
 const userSchema = require("../schemas/user");
 const express = require("express");
 const router = express.Router();
@@ -27,8 +29,12 @@ router.post("/register", (req, res) => {
           email: req.body.email,
           password: hashPassword,
         });
-        user.save().then((result) => {
-          console.log(result);
+        user.save((err, userInfo) => {
+          if (err) {
+            return res.status(404).send({
+              fail: err,
+            });
+          }
         });
         res.status(201).send({
           success: "계정생성성공",
@@ -36,13 +42,52 @@ router.post("/register", (req, res) => {
       }
     })
     .catch(console.log);
-  //   const user = new userSchema(req.body);
-  //   user.save((err, userInfo) => {
-  //     if (err) return res.json({ success: false, err });
-  //     return res.status(200).json({
-  //       success: true,
-  //     });
-  //   });
+  const user = new userSchema(req.body);
 });
 
+router.post("/sendEmail", async (req, res) => {
+  let userEmail = req.body.email;
+  console.log(userEmail);
+
+  let number = Math.floor(Math.random() * 1000000) + 1;
+  if (number > 1000000) {
+    number -= 1000000;
+  }
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp.naver.com",
+    secure: true,
+    auth: {
+      user: process.env.AUTHUSER,
+      pass: process.env.AUTHPASS,
+    },
+  });
+
+  let mailOptions = {
+    from: process.env.AUTHUSER,
+    to: userEmail,
+    subject: "Sign!의 인증번호 입니다.",
+    text: String(number),
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      res.json({ msg: err });
+    } else {
+      res.json({ msg: number });
+    }
+
+    transporter.close();
+  });
+});
+
+// router.post("/login", async (req, res) => {
+//   let body = req.body;
+
+//   let result = await models.user.findOne({
+//     where: {
+//       email: body.userEmail,
+//     },
+//   });
+// });
 module.exports = router;

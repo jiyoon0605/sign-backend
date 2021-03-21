@@ -36,6 +36,10 @@ export const InputField=styled.input`
 
 `;
 
+export const InputEmail=styled(InputField)`
+    width:350px;
+`;
+
 export const SubmitButton=styled.button`
     width:480px;
     height:60px;
@@ -48,6 +52,10 @@ export const SubmitButton=styled.button`
 
     border:1px solid black;
     border-radius:10px;
-
-    
 `;
+export const EmailBtn=styled(SubmitButton)`
+    width:120px;
+    font-size:14px;
+    height:50px;
+    margin-left:10px;
+`
