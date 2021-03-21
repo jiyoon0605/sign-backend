@@ -104,6 +104,7 @@ const Regiter:React.FC=()=>{
         console.log(data);
         axios.post("auth/sendEmail",data)
         .then(e=>{
+            console.log(e);
             alert("인증번호가 발송되었습니다!");
             setAuthnum(String(e.data.msg));
         })
