@@ -5,15 +5,17 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+let jwt = require("jsonwebtoken");
+const { convertToObject } = require("typescript");
 
 router.post("/register", (req, res) => {
   const inputPassword = req.body.password;
-  const salt = Math.round(new Date().valueOf * Math.random()) + "";
+  const salt = String(Math.round(new Date() * Math.random()));
   const hashPassword = crypto
     .createHash("sha512")
     .update(inputPassword + salt)
     .digest("hex");
-
+  console.log(salt);
   userSchema
     .find({ email: req.body.email })
     .exec()
@@ -28,6 +30,7 @@ router.post("/register", (req, res) => {
           name: req.body.name,
           email: req.body.email,
           password: hashPassword,
+          salt: salt,
         });
         user.save((err, userInfo) => {
           if (err) {
@@ -81,13 +84,37 @@ router.post("/sendEmail", async (req, res) => {
   });
 });
 
-// router.post("/login", async (req, res) => {
-//   let body = req.body;
+router.post("/login", async (req, res) => {
+  try {
+    const user = await userSchema.find({ email: req.body.email });
+    if (user.length) {
+      const hashPassword = crypto
+        .createHash("sha512")
+        .update(req.body.password + user[0].salt)
+        .digest("hex");
+      if (hashPassword !== user[0].password) {
+        res.status(404).json({ error: "비밀번호가 틀렸습니다." });
+      }
+      const token = jwt.sign(
+        {
+          userEmail: user[0].userEmail,
+        },
+        process.env.SECRETKEY,
+        {
+          expiresIn: "12h",
+        }
+      );
 
-//   let result = await models.user.findOne({
-//     where: {
-//       email: body.userEmail,
-//     },
-//   });
-// });
+      res.cookie("user", token);
+      res.status(201).json({
+        result: "ok",
+        token,
+      });
+    } else {
+      res.status(404).json({ error: "invalid user" });
+    }
+  } catch (err) {
+    res.status(404).json({ error: "err" });
+  }
+});
 module.exports = router;

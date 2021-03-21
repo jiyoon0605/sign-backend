@@ -1,5 +1,5 @@
 import React,{useState,useReducer,useEffect} from 'react';
-import * as S from 'style/register';
+import * as S from 'style/auth';
 import {registerRequest}from 'modules/register';
 
 import {useDispatch, useSelector}from 'react-redux';
@@ -81,14 +81,13 @@ const Regiter:React.FC=()=>{
         else if(!isSamePasword){
             alert("비밀번호가 맞지 않습니다.");
         }
-        else if(!email.match(emailRegExp)){
+        else if(email.match(emailRegExp)!= null){
             alert("이메일 형식에 맞게 작성해주세요.");
         }
         else if(password.length<8){
             alert("비밀번호는 8자 이상으로 작성하셔야 안전합니다.");
         }
         else if(authNum!==registerData.authNum){
-            console.log(authNum,registerData.authNum)
             alert("인증번호가 옳지 않습니다.");
         }
         else{
@@ -101,10 +100,8 @@ const Regiter:React.FC=()=>{
         const data={
             email:registerData.email
         };
-        console.log(data);
         axios.post("auth/sendEmail",data)
         .then(e=>{
-            console.log(e);
             alert("인증번호가 발송되었습니다!");
             setAuthnum(String(e.data.msg));
         })

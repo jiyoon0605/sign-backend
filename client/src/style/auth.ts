@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-
+import {Link}from 'react-router-dom';
 export const Container=styled.div`
     margin-top:60px;
     width:100vw;
@@ -59,3 +59,8 @@ export const EmailBtn=styled(SubmitButton)`
     height:50px;
     margin-left:10px;
 `
+
+export const LinkBtn=styled(Link)`
+    color:black;
+    margin-top:20px;
+`;

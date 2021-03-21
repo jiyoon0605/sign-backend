@@ -12,6 +12,9 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
+  salt: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("userSchema", userSchema);
