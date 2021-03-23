@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import {Link}from 'react-router-dom';
 export const Container=styled.div`
     margin-top:60px;
-    width:100vw;
     display:flex;
     flex-direction:column;
     justify-content:center;

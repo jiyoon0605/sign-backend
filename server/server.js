@@ -6,6 +6,7 @@ const session = require("express-session");
 const moongose = require("mongoose");
 
 const userRouter = require("./routers/user");
+const postRouter = require("./routers/post");
 
 moongose
   .connect(process.env.MONGO_URL, {
@@ -38,15 +39,10 @@ app.use(cors(corsOption));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/image", express.static("./uploads"));
 app.use("/auth", userRouter);
+app.use("/post", postRouter);
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
-
-app.get("/bye", (req, res) => {
-  res.json({ message: "bye" });
-});
 app.listen(process.env.PORT, () => {
   console.log(`listen ${process.env.PORT} port`);
 });

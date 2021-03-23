@@ -7,6 +7,8 @@ import { RootState} from 'modules';
 import {useHistory}from 'react-router'
 
 import {loginRequest}from 'modules/login'
+import {userDataRequest}from 'modules/userData';
+
 const Login:React.FC=()=>{
     const [email,setEmail]=useState<string>("");
     const [password,setPassword]=useState<string>("");
@@ -16,7 +18,7 @@ const Login:React.FC=()=>{
 
     const onHandleClick=()=>{
         const emailRegExp=/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[00-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-        if(email.match(emailRegExp)!= null){
+        if(!emailRegExp.test(email)){
             alert("이메일 형식을 맞춰주세요.");
             return;
         }
@@ -33,11 +35,13 @@ const Login:React.FC=()=>{
     useEffect(()=>{
         if(state.result==="success"){
             alert("로그인에 성공하셨습니다!");
+            histroy.push("/");
+            dispatch(userDataRequest());
         }
         else if(state.result==="fail"){
             alert(state.reason);
         }
-    },[state]);
+    },[state,dispatch,histroy]);
 
     return <S.Container>
         <S.Title>로그인</S.Title>

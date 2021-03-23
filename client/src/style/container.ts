@@ -11,13 +11,11 @@ export const Header=styled.header`
     @media screen and (max-width:700px){
         margin:0;
         margin-top:10px;
-        width:100vw;
     }
 
     .link{
         text-decoration:none;
         color:black;
-
     }
 
 `
@@ -29,8 +27,10 @@ export const Logo=styled.div`
 export const NavList=styled.ul`
     display:flex;
     list-style:none;
+    text-align:center;
 `
 export const NavItem=styled.li`
+    width:90px;
     font-family:"Medium";
     margin:0 20px;
     cursor: pointer;

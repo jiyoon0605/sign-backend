@@ -18,15 +18,8 @@ interface actionType{
     type:"EMAIL"|"NAME"|"PASSWORD"|"PASSWORDCONFIRM"|"AUTHNUM";
     data:string
 };
-interface failType{
-    result: "fail", 
-    reason: {
-        fail:string
-    }
-}
-interface AuthResoponse{
-    msg:number|Error
-}
+
+
 
 const Regiter:React.FC=()=>{
     const dispatch=useDispatch();
@@ -43,6 +36,7 @@ const Regiter:React.FC=()=>{
             alert("회원가입에 성공하였습니다!");
             histroy.push("/login")
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[state])
 
     const reducer=(state:registerType,action:actionType):registerType=>{
@@ -81,7 +75,7 @@ const Regiter:React.FC=()=>{
         else if(!isSamePasword){
             alert("비밀번호가 맞지 않습니다.");
         }
-        else if(email.match(emailRegExp)!= null){
+        else if(!emailRegExp.test(email)){
             alert("이메일 형식에 맞게 작성해주세요.");
         }
         else if(password.length<8){

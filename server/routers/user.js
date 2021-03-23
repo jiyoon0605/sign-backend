@@ -6,7 +6,6 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 let jwt = require("jsonwebtoken");
-const { convertToObject } = require("typescript");
 
 router.post("/register", (req, res) => {
   const inputPassword = req.body.password;
@@ -97,7 +96,9 @@ router.post("/login", async (req, res) => {
       }
       const token = jwt.sign(
         {
-          userEmail: user[0].userEmail,
+          id: user[0].id,
+          email: user[0].userEmail,
+          name: user[0].name,
         },
         process.env.SECRETKEY,
         {
@@ -111,10 +112,18 @@ router.post("/login", async (req, res) => {
         token,
       });
     } else {
-      res.status(404).json({ error: "invalid user" });
+      res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
     }
   } catch (err) {
     res.status(404).json({ error: "err" });
   }
+});
+
+router.get("/userData", async (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
+    if (err) res.status(404).send({ message: "올바른 토큰이 아닙니다." });
+    else res.status(201).send({ data: decoded });
+  });
 });
 module.exports = router;
