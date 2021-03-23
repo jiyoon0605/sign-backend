@@ -26,7 +26,7 @@ const Write:React.FC=()=>{
             alert("글이 등록되었습니다!");
             histroy.push("/post");
         }
-    },[state])
+    },[state,histroy])
 
     const imageReader = (e:File) => {
         const fileReader = new FileReader();

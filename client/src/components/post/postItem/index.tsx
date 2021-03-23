@@ -20,16 +20,16 @@ type Props={
 const PostItem:React.FC<Props>=({item})=>{
 
     const [imgPath,setImgPath]=useState<string>("");
-
+    const {title,content,curNum,goalNum,_id}=item;
     useEffect(()=>{
         axios.post("/post/img",{
-            id:item._id
+            id:_id
         }).then((e:any)=>{
             setImgPath(`data:${e.data.contentType};base64,${e.data.base64}`)
           })
-    },[])
+    },[_id])
 
-    const {title,content,curNum,goalNum}=item;
+    
     return(
         <S.ItemContainer>
             <S.ItemMain>
