@@ -2,7 +2,7 @@ import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import {  call,  put, takeLatest } from "redux-saga/effects";
 import axios from 'axios';
 interface RegisterState{
-    result?:"pendding",
+    result?:"pending",
     email:string,
     name:string,
     password:string
@@ -28,7 +28,7 @@ const registerFail=createAction<RegisterFail>(REGISTER_FAILUER);
 type RegisterActionTypes=PayloadAction<RegisterState>|PayloadAction<RegisterSuccess>|PayloadAction<RegisterFail>;
 
 const registerReducer=(state:RegisterType={
-    result:"pendding",
+    result:"pending",
     email:"",
     name:"",
     password:""

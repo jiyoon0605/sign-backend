@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import PostItem from 'components/post/postItem';
+import * as S from 'style/post'
+
 
 const Post:React.FC=()=>{
-    const [imgPath,setImagePath]=useState("")
+    const [data,setData]=useState<any[]>([])
     useEffect(()=>{
         axios.get("/post/")
         .then(e=>{
-            axios.post('/post/img',{
-                id:e.data[0]._id
-            }).then(e=>{
-                setImagePath(`data:${e.data.contentType};base64,${e.data.base64}`)
-            })
+            console.log(e.data)
+            setData(e.data)
+            // e.data.map((item:any)=>{
+            //     axios.post('/post/img',{
+            //         id:item._id
+            //     }).then((e:any)=>{
+            //         setImagePath([...imgPath,`data:${e.data.contentType};base64,${e.data.base64}`])
+            //     })
+            // })
+            // return imgPath
+
         })
     },[])
-//console.log();
-    // eslint-disable-next-line jsx-a11y/alt-text
-    return <img src={imgPath}></img>
+
+    return <S.Container>
+         <S.PostContainer>
+         {data.map((e,i)=><PostItem key={i} item={e}/>)}
+         </S.PostContainer>
+
+    </S.Container>
+    
 };
 
 export default Post;

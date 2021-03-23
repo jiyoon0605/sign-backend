@@ -31,18 +31,23 @@ const Container:React.FC=()=>{
                     <S.NavItem onClick={()=>history.push("/post")}>전체 게시물</S.NavItem>
                     <S.NavItem onClick={()=>history.push("/write")}>글쓰기</S.NavItem>
                     <S.NavItem onClick={()=>{
-                        localStorage.getItem("accessToken")?console.log("logout"):history.push("/login")
+                        if(localStorage.getItem("accessToken")){
+                            localStorage.removeItem("accessToken");
+                            history.push("/login")
+                        }
                         }}>
                             {localStorage.getItem("accessToken")?"로그아웃":"로그인"}
                     </S.NavItem>
                 </S.NavList>
             </S.Header>
+         
             <Switch>
                 <Route path="/register" component={Register}/>
                 <Route path="/login"component={Login}/>
                 <Route path="/write"component={Write}/>
-                <Route path="/post"component={Post}/>
+                <Route path="/post"component={Post}/>       
             </Switch>
+
         </>
 
     )

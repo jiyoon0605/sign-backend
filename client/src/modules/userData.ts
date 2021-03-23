@@ -23,7 +23,6 @@ const userDataReducer=(state:UserData={
 },action:UserDataActionType)=>{
     switch(action.type){
         case USERDATA_SUCCESS:
-            console.log(action.payload);
             return action.payload;
         default:
             return state;
@@ -32,7 +31,6 @@ const userDataReducer=(state:UserData={
 
 
 function* request(){
-    console.log("request")
     try{
         const {data}=yield call([clinet,"get"],"/auth/userData");
         const {id,name}=data.data;

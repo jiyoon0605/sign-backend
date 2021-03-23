@@ -73,7 +73,6 @@ router.post("/img", (req, res) => {
     (err, posts) => {
       if (err) return res.status(404).send("이미지 정보 없음");
       fs.readFile(`uploads/${posts[0].img.filename}`, (err, data) => {
-        console.log(data);
         res.status(200).send({
           base64: data.toString("base64"),
           contentType: posts[0].img.contentType,

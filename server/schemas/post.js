@@ -5,7 +5,7 @@ const {
   Types: { ObjectId },
 } = Schema;
 
-const uploadSchema = new mongoose.Schema({
+const uploadSchema = new Schema({
   filename: {
     type: String,
     unique: true,
@@ -16,6 +16,9 @@ const uploadSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+const userData = new Schema({});
+
 const postSchema = new Schema({
   writer: {
     type: String,
