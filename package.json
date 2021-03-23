@@ -4,6 +4,7 @@
     "scripts": {
         "client": "cd client && npm start",
         "server": "cd server && nodemon server",
+        "start": "cd server && nodemon server",
         "dev": "concurrently --kill-others-on-fail   \"yarn server\"   \"yarn client\""
     },
     "dependencies": {
