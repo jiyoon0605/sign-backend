@@ -17,7 +17,7 @@ const Container:React.FC=()=>{
     const dispatch=useDispatch();
 
     useEffect(()=>{
-        dispatch(userDataRequest());
+        if(localStorage.getItem("accessToken")) dispatch(userDataRequest());
     },[dispatch]);
 
 
@@ -33,8 +33,8 @@ const Container:React.FC=()=>{
                     <S.NavItem onClick={()=>{
                         if(localStorage.getItem("accessToken")){
                             localStorage.removeItem("accessToken");
-                            history.push("/login")
                         }
+                        history.push("/login");
                         }}>
                             {localStorage.getItem("accessToken")?"로그아웃":"로그인"}
                     </S.NavItem>
