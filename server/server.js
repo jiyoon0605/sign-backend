@@ -43,6 +43,7 @@ app.use("/image", express.static("./uploads"));
 app.use("/auth", userRouter);
 app.use("/post", postRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`listen ${process.env.PORT} port`);
+const server = http.createServer(process.env.PORT || 3000);
+app.listen(server, () => {
+  console.log(`listen ${server} port`);
 });
