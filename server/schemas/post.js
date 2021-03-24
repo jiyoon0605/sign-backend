@@ -17,7 +17,16 @@ const uploadSchema = new Schema({
   },
 });
 
-const userData = new Schema({});
+const userData = new Schema({
+  writer: {
+    type: String,
+    require: true,
+  },
+  writerId: {
+    type: ObjectId,
+    require: true,
+  },
+});
 
 const postSchema = new Schema({
   writer: {
@@ -52,12 +61,8 @@ const postSchema = new Schema({
     type: Number,
     require: true,
   },
-  curNum: {
-    type: Number,
-    default: 0,
-  },
   list: {
-    type: Array,
+    type: [userData],
   },
 });
 

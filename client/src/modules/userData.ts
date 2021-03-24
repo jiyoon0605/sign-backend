@@ -1,5 +1,5 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
-import clinet from 'api';
+import getRequest from 'api';
 import {  call,  put, takeLatest } from "redux-saga/effects";
 
 interface UserData{
@@ -32,7 +32,7 @@ const userDataReducer=(state:UserData={
 
 function* request(){
     try{
-        const {data}=yield call([clinet,"get"],"/auth/userData");
+        const {data}=yield call([getRequest(),"get"],"/auth/userData");
         const {id,name}=data.data;
         yield put(userDataSuccess({
             id,

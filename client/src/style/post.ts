@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+
 export const Container=styled.div`
     width:100vw;
     display:flex;
@@ -8,7 +9,8 @@ export const Container=styled.div`
      @media screen and (max-width:1000px){
          margin:100px 0;
      }
-`
+     overflow-y:scroll;
+`;
 export const PostContainer=styled.div`
     max-width:1650px;
     display:flex;
@@ -23,11 +25,22 @@ export const PostContainer=styled.div`
 
 //postItem
 export const ItemContainer=styled.div`
+    cursor: pointer;
     width:480px;
     height:250px;
 
     margin:20px;
     box-shadow:2px 2px 3px 0 rgba(0,0,0,0.5);
+
+    background-color:white;
+
+    transition: transform 0.3s;
+
+    &:hover{
+        z-index:99;
+        box-shadow:3px 3px 8px 0 rgba(0,0,0,0.8);
+        transform:scale(1.1);
+    }
 `;
 export const ItemMain=styled.div`
     display:flex;
@@ -46,7 +59,7 @@ width:100%;
 height:100%;
 display:block;
 margin-right:10px;
-`
+`;
 export const Title=styled.h3`
     font-family:"Medium";
     height:30px;
@@ -63,7 +76,7 @@ export const Contents=styled.div`
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 
-`
+`;
 export const ItemFooter=styled.div`
     width:100%;
     height:70px;
@@ -72,4 +85,10 @@ export const ItemFooter=styled.div`
     box-sizing:border-box;
     padding:15px;
 
-`
+`;
+export const InfoContainer=styled.div`
+    display:flex;
+    justify-content:space-between;
+    font-family:"Light";
+    margin-top:10px;
+`;

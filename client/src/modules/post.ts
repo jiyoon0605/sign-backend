@@ -1,65 +1,69 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
-import clinet from 'api';
 import {  call,  put, takeLatest } from "redux-saga/effects";
+import axios from 'axios';
 
 
-interface FormDataType{
-    result?:"pending",
-    data:FormData
-}
-
-interface WriteSuccess{
+interface ListRequest{
+    result?:"pendding",
+    id:string
+};
+interface RequestSuccess{
     result:"success",
+    data:[]
 };
 
-interface WriteFail{
-    result:"fail"
+interface RequestFail{
+    result:"fail",
     reason:string|Error
 };
 
-type WriteType=FormDataType|WriteSuccess|WriteFail;
+const POST_LIST_REQUEST="POST_LIST_REQUEST";
+const POST_LIST_SUCCESS="POST_LIST_SUCCESS";
+const POST_LIST_FAIL="POST_LIST_FAIL";
 
-const WRITE_REQUEST="WRITE_REQUEST";
-const WRITE_SUCCESS="WRITE_SUCCESS";
-const WRITE_FAIL="WRITE_FAIL";
+export const listRequest=createAction<ListRequest>(POST_LIST_REQUEST);
+const requestSuccess=createAction<RequestSuccess>(POST_LIST_SUCCESS);
+const requestFail=createAction<RequestFail>(POST_LIST_FAIL);
 
-export const writeRequest=createAction<FormDataType>(WRITE_REQUEST);
-const writeSuccess=createAction<WriteSuccess>(WRITE_SUCCESS);
-const wrtieFail=createAction<WriteFail>(WRITE_FAIL);
+type PostType=RequestSuccess|RequestFail|ListRequest;
+type PostRequestType=PayloadAction<ListRequest>|PayloadAction<RequestSuccess>|PayloadAction<RequestFail>;
 
-type WriteActionType=PayloadAction<FormDataType>|PayloadAction<WriteSuccess>|PayloadAction<WriteFail>;
-
-const writeReducer=(state:WriteType={result:"pending", data:new FormData()},action:WriteActionType):WriteType=>{
+const postReducer=(state:PostType={
+    result:"pendding",
+    id:"0"
+},action:PostRequestType)=>{
     switch(action.type){
-        case WRITE_REQUEST:
-        case WRITE_SUCCESS:
-        case WRITE_FAIL:
+        case POST_LIST_REQUEST:
+        case POST_LIST_SUCCESS:
+        case POST_LIST_FAIL:
             return action.payload;
         default:
-            return state;
+            return state
     }
-
 }
 
-
-function* request(action:PayloadAction<FormDataType>){
-    const userData=action.payload;
-    console.log(userData.data);
+function* request(action:PayloadAction<ListRequest>){
     try{
-        yield call([clinet,"post"],"/post/upload",userData.data);
-        yield put(writeSuccess({
-            result:"success",
-        }))
-    }catch(e){
-        yield put(wrtieFail({
+        const {data} = yield call([axios,"get"],`/auth/login/${action.payload.id}`);
+        console.log(data)
+         yield put(requestSuccess({
+             result:"success",
+             data
+         }));
+         
+         localStorage.setItem("accessToken",data.token);
+    }
+    catch(err){
+
+        yield put(requestFail({
             result:"fail",
-            reason:e
-        }))
+            reason:err.response.data.error
+        }));
     }
 }
 
-function* watchWrite(){
-    yield takeLatest(WRITE_REQUEST,request);
+function* watchPost(){
+    yield takeLatest(POST_LIST_REQUEST,request);
 }
 
-export {writeReducer,watchWrite}
+export {postReducer,watchPost};

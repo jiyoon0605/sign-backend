@@ -34,9 +34,7 @@ const loginReducer=(state:LoginType={
 },action:LoginActionType)=>{
     switch(action.type){
         case LOGIN_REQUEST:
-            return action.payload;
         case LOGIN_SUCCESS:
-            return action.payload;
         case LOGIN_FAIL:
             return action.payload;
         default:
@@ -47,13 +45,16 @@ const loginReducer=(state:LoginType={
 
 function* request(action:LoginActionType){
     try{
-        const {data}= yield call([axios,"post"],"/auth/login",action.payload);
+        const {data} = yield call([axios,"post"],"/auth/login",action.payload);
+        console.log(data)
          yield put(loginSuccess({
              result:"success"
          }));
+         
          localStorage.setItem("accessToken",data.token);
     }
     catch(err){
+
         yield put(loginFail({
             result:"fail",
             reason:err.response.data.error

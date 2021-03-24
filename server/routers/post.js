@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const postSchema = require("../schemas/post");
+const userSchema = require("../schemas/user");
 let jwt = require("jsonwebtoken");
 const fs = require("fs");
 
@@ -59,7 +60,7 @@ router.post("/upload", upload.single("img"), (req, res) => {
 
 router.get("/", (req, res) => {
   postSchema.find({}, function (err, posts) {
-    if (err) return res.status(500).send("User 전체 조회 실패.");
+    if (err) return res.status(500).send("게시물 전체 조회 실패.");
     res.status(200).send(posts);
   });
 });
@@ -80,4 +81,49 @@ router.post("/img", (req, res) => {
       });
     }
   );
+});
+
+router.get("/:id", (req, res) => {
+  postSchema.findOne({ _id: req.params.id }, (err, post) => {
+    if (err || post === null) return res.status(404).send(err);
+    res.status(201).send({
+      post,
+    });
+  });
+});
+
+router.get("/comment/:id", (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
+    if (err) res.status(404).send({ message: "올바른 토큰이 아닙니다." });
+    else {
+      postSchema.findOne({ _id: req.params.id }).then((post) => {
+        let result = true;
+        for (let l of post.list) {
+          if (l.writerId == decoded.id) {
+            result = false;
+            break;
+          }
+        }
+        if (result) {
+          postSchema.findByIdAndUpdate(
+            req.params.id,
+            {
+              $push: {
+                list: { writer: decoded.name, writerId: decoded.id },
+              },
+            },
+            (err) => {
+              if (err) res.status(404).send({ message: "댓글 추가 실패" });
+              else {
+                res.status(200).send({ message: "댓글 추가 성공" });
+              }
+            }
+          );
+        } else {
+          return res.status(404).send({ message: "이미 참여한 글입니다." });
+        }
+      });
+    }
+  });
 });

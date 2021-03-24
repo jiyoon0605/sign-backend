@@ -7,19 +7,13 @@ import Write from 'components/write'
 
 import * as S from 'style/container';
 
-import {userDataRequest}from 'modules/userData';
+
 
 import {useDispatch}from 'react-redux';
 import Post from 'components/post';
 
 const Container:React.FC=()=>{
     const history=useHistory();
-    const dispatch=useDispatch();
-
-    useEffect(()=>{
-        if(localStorage.getItem("accessToken")) dispatch(userDataRequest());
-    },[dispatch]);
-
 
     return(
         <>

@@ -4,7 +4,7 @@ import * as S from 'style/write';
 
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
-import {writeRequest}from 'modules/post'
+import {writeRequest}from 'modules/write'
 import {useHistory}from 'react-router'
 const Write:React.FC=()=>{
     const [imgData,setImgData]=useState<File>();
