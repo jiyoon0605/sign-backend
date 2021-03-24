@@ -43,7 +43,7 @@ app.use("/image", express.static("./uploads"));
 app.use("/auth", userRouter);
 app.use("/post", postRouter);
 
-const server = http.createServer(process.env.PORT || 3000);
+const server = http.createServer(process.env.PORT || 5000);
 app.listen(server, () => {
   console.log(`listen ${server} port`);
 });
