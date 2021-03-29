@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {Link}from 'react-router-dom';
 export const Container=styled.div`
-    margin-top:60px;
+    margin-top:10rem;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -51,6 +51,12 @@ export const SubmitButton=styled.button`
 
     border:1px solid black;
     border-radius:10px;
+
+    transition: transform 0.2s;
+    &:active{
+        transform:scale(0.9);
+        
+    }
 `;
 export const EmailBtn=styled(SubmitButton)`
     width:120px;

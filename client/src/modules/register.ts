@@ -10,22 +10,21 @@ interface RegisterState{
 interface RegisterSuccess{
     result:"success",
 };
-interface RegisterFail{
-    result:"fail",
-    reason:string|Error
-};
-
-type RegisterType=RegisterSuccess|RegisterFail|RegisterState;
+interface RegisterComplete{
+     result:"complate",
+}
+type RegisterType=RegisterSuccess|RegisterState|RegisterComplete;
 
 const REGISTER_REQUEST="REGISTER_REQUEST";
 const REGISTER_SUCCESS="REGISTER_SUCCESS";
-const REGISTER_FAILUER="REGISTER_FAILUER";
+const REGISTER_COMPLATE="REGISTER_COMPLATE";
 
 export const registerRequest=createAction<RegisterState>(REGISTER_REQUEST);
+export const registerComplate=createAction(REGISTER_COMPLATE);
 const registerSuccess=createAction<RegisterSuccess>(REGISTER_SUCCESS);
-const registerFail=createAction<RegisterFail>(REGISTER_FAILUER);
 
-type RegisterActionTypes=PayloadAction<RegisterState>|PayloadAction<RegisterSuccess>|PayloadAction<RegisterFail>;
+
+type RegisterActionTypes=PayloadAction<RegisterState>|PayloadAction<RegisterSuccess>|PayloadAction<RegisterComplete>;
 
 const registerReducer=(state:RegisterType={
     result:"pending",
@@ -35,10 +34,8 @@ const registerReducer=(state:RegisterType={
 },action:RegisterActionTypes)=>{
     switch(action.type){
         case REGISTER_REQUEST:
-            return action.payload;
         case REGISTER_SUCCESS:
-            return action.payload;
-        case REGISTER_FAILUER:
+        case REGISTER_COMPLATE:
             return action.payload;
         default:
             return state;
@@ -56,10 +53,7 @@ function* request(action:RegisterActionTypes){
         }))
     }
     catch(err){
-        yield put(registerFail({
-            result:"fail",
-            reason:err.response.data.fail
-        }))
+        alert(err.response.data.fail)
     }
 }
 

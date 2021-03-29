@@ -49,7 +49,7 @@ const postSchema = new Schema({
   img: {
     type: uploadSchema,
   },
-  craeteAt: {
+  createAt: {
     type: Date,
     default: Date.now(),
   },
@@ -63,6 +63,10 @@ const postSchema = new Schema({
   },
   list: {
     type: [userData],
+  },
+  category: {
+    type: String,
+    default: "other",
   },
 });
 

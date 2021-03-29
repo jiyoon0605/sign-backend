@@ -6,8 +6,11 @@ import {Provider}from 'react-redux';
 import store from 'store';
 
 const GlobalStyle=createGlobalStyle`
+body{
   margin:0;
   padding:0;
+}
+
   @font-face {
     font-family: 'JSArirang';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/JSArirang-RegularA1.woff') format('woff');

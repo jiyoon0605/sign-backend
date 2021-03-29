@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container=styled.div`
-    margin-top:60px;
+    margin-top:10rem;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -9,7 +9,7 @@ export const Container=styled.div`
 `;
 
 export const ContainerBox=styled.div`
-    width:800px;
+    width:750px;
     box-shadow:2px 2px 5px 0 rgba(0,0,0,0.5);
 
 
@@ -35,8 +35,10 @@ export const SubmitBtn=styled.div`
     justify-content:center;
     align-items:center;
 
+    transition: transform 0.2s;
     &:active{
-        box-shadow:inset 2px 2px 3px 0 rgba(0,0,0,0.5);
+        transform:scale(0.9);
+        outline:none;
     }
 
     cursor: pointer;
@@ -44,7 +46,7 @@ export const SubmitBtn=styled.div`
 
 export const ImageContainer=styled.img`
     width:100%;
-    height:250px;
+    height:400px;
     background-color:grey;
 
     object-fit:cover;
@@ -76,9 +78,10 @@ export const ImgLabel=styled.label`
 `;
 
 export const Title=styled.h2`
-
-    margin-top:30px;
-    font-family:"Bold";
+    margin-top:1.5rem;
+    margin-bottom:.5rem;
+    font-family:"Medium";
+    font-size:1rem;
 `;
 export const ContentsContainer=styled.div`
     width:100%;
@@ -90,9 +93,9 @@ export const ContentsContainer=styled.div`
  
 `;
 export const TextInput=styled.input`
-    width:100%;
-    height:60px;
-    font-size:20px;
+    width:90%;
+    height:2rem;
+    font-size:1rem;
     font-family:"Medium";
 
     border:none;
@@ -101,12 +104,11 @@ export const TextInput=styled.input`
     box-sizing:border-box;
     padding:0 10px;
 
-    margin-bottom:50px;
+    margin:1rem;
 `;
 export const ContentsInput=styled.textarea`
     resize:none;
-    width:100%;
-    height:250px;
+    width:90%;
     border:2px solid #FF4141;
 
     font-size:15px;
@@ -114,6 +116,23 @@ export const ContentsInput=styled.textarea`
 
     box-sizing:border-box;
     padding:10px;
+    margin:1rem;
 
-    margin-bottom:50px;
+    overflow:hidden;
 `;
+
+export const CategoryContainer=styled.select`
+width:90%;
+height:2.5rem;
+
+margin:1rem;
+border:2px solid #FF4114;
+
+box-sizing:border-box;
+padding:.5rem;
+-webkit-appearance: none;
+-moz-appearance: none; 
+appearance: none; 
+background: url() no-repeat 95% 50%;
+`
+

@@ -1,6 +1,6 @@
 import React,{useState,useReducer,useEffect} from 'react';
 import * as S from 'style/auth';
-import {registerRequest}from 'modules/register';
+import {registerComplate, registerRequest}from 'modules/register';
 
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
@@ -26,14 +26,12 @@ const Regiter:React.FC=()=>{
     const state=useSelector((state:RootState)=>state.registerReducer);
     const histroy=useHistory();
 
-    const [authNum,setAuthnum]=useState<string>("")
+    const [authNum,setAuthnum]=useState<string>("-")
 
     useEffect(()=>{
-        if(state.result==="fail"){
-            alert(state.reason);
-        }
-        else if(state.result==="success"){
+        if(state.result==="success"){
             alert("회원가입에 성공하였습니다!");
+            dispatch(registerComplate());
             histroy.push("/login")
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,7 +80,7 @@ const Regiter:React.FC=()=>{
             alert("비밀번호는 8자 이상으로 작성하셔야 안전합니다.");
         }
         else if(authNum!==registerData.authNum){
-            alert("인증번호가 옳지 않습니다.");
+            alert("인증번호가 맞지 않습니다.");
         }
         else{
             dispatch(registerRequest(registerData));
@@ -112,7 +110,8 @@ const Regiter:React.FC=()=>{
         <S.InputField placeholder="인증번호" value={registerData.authNum} onChange={e=>setRegisterData({type:"AUTHNUM",data:e.target.value})}/>
         <S.InputField placeholder="이름"value={registerData.name} onChange={e=>setRegisterData({type:"NAME",data:e.target.value})}/>
         <S.InputField type="password" placeholder="비밀번호" value={registerData.password} onChange={e=>setRegisterData({type:"PASSWORD",data:e.target.value})}/>
-        <S.InputField type="password" placeholder="비밀번호 확인" onChange={e=>setRegisterData({type:"PASSWORDCONFIRM",data:e.target.value})}/>
+        <S.InputField type="password" placeholder="비밀번호 확인" onChange={e=>setRegisterData({type:"PASSWORDCONFIRM",data:e.target.value})}
+                    onKeyUp={(e)=>{if(e.key === "Enter") onHandleClick()}}/>
         <S.SubmitButton onClick={onHandleClick}>
             시작하기
         </S.SubmitButton>

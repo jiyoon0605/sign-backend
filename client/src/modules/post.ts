@@ -1,69 +1,108 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
+import getRequest from 'api';
 import {  call,  put, takeLatest } from "redux-saga/effects";
-import axios from 'axios';
 
+interface InitState{
+    result:"no started"
+}
 
-interface ListRequest{
-    result?:"pendding",
-    id:string
+interface ListData{
+  writer:string
+}
+export interface DetailState{
+    _id:string,
+    content:string,
+    createNum:string,
+    title:string,
+    endDate:string,
+    writer:string,
+    writerId:string,
+    goalNum: number,
+    list:ListData[],
+    createAt:string,
+    category:string
+  
+    
 };
+
+
+interface RequestState{
+    result?:"pednning",
+    id?:string
+};
+
 interface RequestSuccess{
-    result:"success",
-    data:[]
+    result:"list",
+    data:DetailState[]
+};
+interface DetailRequestSuccess{
+    result:"detail",
+    data:DetailState
 };
 
-interface RequestFail{
-    result:"fail",
-    reason:string|Error
-};
+type CategoryType="other"|"sport"|"enter"|"individ"|"game"|"all";
 
 const POST_LIST_REQUEST="POST_LIST_REQUEST";
-const POST_LIST_SUCCESS="POST_LIST_SUCCESS";
-const POST_LIST_FAIL="POST_LIST_FAIL";
+const POST_SUCCESS="POST_SUCCESS";
 
-export const listRequest=createAction<ListRequest>(POST_LIST_REQUEST);
-const requestSuccess=createAction<RequestSuccess>(POST_LIST_SUCCESS);
-const requestFail=createAction<RequestFail>(POST_LIST_FAIL);
+const POST_DETAIL_REQUEST="POST_DETAIL_REQUEST";
 
-type PostType=RequestSuccess|RequestFail|ListRequest;
-type PostRequestType=PayloadAction<ListRequest>|PayloadAction<RequestSuccess>|PayloadAction<RequestFail>;
 
-const postReducer=(state:PostType={
-    result:"pendding",
-    id:"0"
-},action:PostRequestType)=>{
+export const listRequest=createAction<CategoryType>(POST_LIST_REQUEST);
+export const detailRequest=createAction<RequestState>(POST_DETAIL_REQUEST);
+const requestSuccess=createAction<RequestSuccess|DetailRequestSuccess>(POST_SUCCESS);
+
+
+type PostType=RequestSuccess|InitState|RequestState|DetailRequestSuccess;
+type PostActionType=PayloadAction<RequestState>|PayloadAction<RequestSuccess>|PayloadAction<DetailRequestSuccess>;
+
+const postReducer=(state:PostType={result:"no started"},action:PostActionType):PostType=>{
     switch(action.type){
-        case POST_LIST_REQUEST:
-        case POST_LIST_SUCCESS:
-        case POST_LIST_FAIL:
+        case POST_SUCCESS:
             return action.payload;
         default:
             return state
     }
 }
 
-function* request(action:PayloadAction<ListRequest>){
+function* postListRequest(action:PayloadAction<CategoryType>){
     try{
-        const {data} = yield call([axios,"get"],`/auth/login/${action.payload.id}`);
-        console.log(data)
-         yield put(requestSuccess({
-             result:"success",
-             data
+        if(action.payload==="all"){
+            const {data} = yield call([getRequest(),"get"],`/post/`);
+            yield put(requestSuccess({
+            result:"list",
+            data
          }));
+        }else{
+            const {data}=yield call([getRequest(),"get"],`/post/category/${action.payload}`);
+            yield put(requestSuccess({
+                result:"list",
+                data
+            }));
+        } 
+
          
-         localStorage.setItem("accessToken",data.token);
     }
     catch(err){
+        alert(err.response.data.error);
+    }
+}
 
-        yield put(requestFail({
-            result:"fail",
-            reason:err.response.data.error
+function* postDetailRequest(action:PayloadAction<RequestState>){
+    try{
+        const {data}=yield call([getRequest(),"get"],`/post/${action.payload.id}`);
+        yield put(requestSuccess({
+            result:"detail",
+            data:data.post
         }));
+    }catch(err){
+         alert(err);
     }
 }
 
 function* watchPost(){
-    yield takeLatest(POST_LIST_REQUEST,request);
+    yield takeLatest(POST_LIST_REQUEST,postListRequest);
+    yield takeLatest(POST_DETAIL_REQUEST,postDetailRequest);
 }
 
 export {postReducer,watchPost};

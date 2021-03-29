@@ -42,6 +42,7 @@ router.post("/upload", upload.single("img"), (req, res) => {
         writerId: decoded.id,
         endDate: req.body.endDate,
         goalNum: req.body.goalNum,
+        category: req.body.category,
       });
       post.save((err, data) => {
         if (err) {
@@ -92,38 +93,56 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.get("/category/:category", (req, res) => {
+  postSchema.find({ category: req.params.category }, (err, post) => {
+    if (err || post === null) return res.status(404).send(err);
+    res.status(201).send(post);
+  });
+});
+
 router.get("/comment/:id", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
-    if (err) res.status(404).send({ message: "올바른 토큰이 아닙니다." });
+    if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
     else {
-      postSchema.findOne({ _id: req.params.id }).then((post) => {
-        let result = true;
-        for (let l of post.list) {
-          if (l.writerId == decoded.id) {
-            result = false;
-            break;
+      postSchema
+        .findOne({ _id: req.params.id })
+        .then((post) => {
+          if (post.writerId === decoded.id) {
+            res
+              .status(404)
+              .send({ error: "자신의 글에는 동의할 수 없습니다." });
           }
-        }
-        if (result) {
-          postSchema.findByIdAndUpdate(
-            req.params.id,
-            {
-              $push: {
-                list: { writer: decoded.name, writerId: decoded.id },
-              },
-            },
-            (err) => {
-              if (err) res.status(404).send({ message: "댓글 추가 실패" });
-              else {
-                res.status(200).send({ message: "댓글 추가 성공" });
-              }
+
+          let result = true;
+          for (let l of post.list) {
+            if (l.writerId == decoded.id) {
+              result = false;
+              break;
             }
-          );
-        } else {
-          return res.status(404).send({ message: "이미 참여한 글입니다." });
-        }
-      });
+          }
+          if (result) {
+            postSchema.findByIdAndUpdate(
+              req.params.id,
+              {
+                $push: {
+                  list: { writer: decoded.name, writerId: decoded.id },
+                },
+              },
+              (err) => {
+                if (err) res.status(404).send({ message: "댓글 추가 실패" });
+                else {
+                  res.status(200).send({ message: "댓글 추가 성공" });
+                }
+              }
+            );
+          } else {
+            return res.status(404).send({ message: "이미 참여한 글입니다." });
+          }
+        })
+        .catch(() =>
+          res.status(404).send({ error: "존재하지 않는 글입니다." })
+        );
     }
   });
 });
