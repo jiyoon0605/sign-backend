@@ -52,15 +52,14 @@ const Post:React.FC=()=>{
     }
 
     
-    const renderList=()=>{
+
+    useEffect(() => {
+
         const list=data.slice();
         const sortedList=align==="latest"?data.map((e,i)=><PostItem key={i} data={e}/>):
         align==="rates"?list.sort(ratesAlign).map((e,i)=><PostItem key={i} data={e}/>):
         list.sort(()=>Math.random()-Math.random()).map((e,i)=><PostItem key={i} data={e}/>);
-        return  sortedList;
-    }
-    useEffect(() => {
-        setList(renderList());
+        setList(sortedList);
     }, [align, state, data])
 
 

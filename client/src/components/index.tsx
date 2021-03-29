@@ -1,6 +1,6 @@
 import React,{useEffect, useState } from 'react'
 import {Switch,Route,Link}from 'react-router-dom'
-import {Redirect, useHistory}from 'react-router';
+import {useHistory}from 'react-router';
 import Register from 'components/register';
 import Login from 'components/login';
 import Write from 'components/write'
@@ -33,7 +33,7 @@ const Container:React.FC=()=>{
 
     useEffect(() => {
         history.push("/post");
-    }, [])
+    }, [history])
 
     useEffect(() => {
         
