@@ -82,7 +82,7 @@ export const ItemContainer=styled.div`
     }
      @media screen and (max-width:1000px){
          width:20rem;
-         height:50rem;
+         height:36rem;
          
          flex-direction:column;
      }
@@ -193,9 +193,8 @@ export const NavButton=styled.button`
 `;
 
 export const CategoeyBox=styled.div`
-    width:2rem;
-    height:1rem;
 
+    width:3rem;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -203,7 +202,7 @@ export const CategoeyBox=styled.div`
     margin-top:1rem;
 
     box-sizing:border-box;
-    padding:.5rem 1.2rem;
+    padding:.1rem;
 
     border-radius:5px;
 

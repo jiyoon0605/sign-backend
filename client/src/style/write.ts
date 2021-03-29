@@ -99,7 +99,7 @@ export const TextInput=styled.input`
     font-family:"Medium";
 
     border:none;
-    border-bottom:2px solid #FF4141;
+    border-bottom:1px solid #FF414188;
 
     box-sizing:border-box;
     padding:0 10px;
@@ -109,7 +109,7 @@ export const TextInput=styled.input`
 export const ContentsInput=styled.textarea`
     resize:none;
     width:90%;
-    border:2px solid #FF4141;
+    border:1px solid #FF414188;
 
     font-size:15px;
     font-family:"Medium";
@@ -126,7 +126,7 @@ width:90%;
 height:2.5rem;
 
 margin:1rem;
-border:2px solid #FF4114;
+border:1px solid #FF411488;
 
 box-sizing:border-box;
 padding:.5rem;

@@ -4,8 +4,7 @@ import { RouteComponentProps } from "react-router-dom";
 import {useDispatch,useSelector}from 'react-redux';
 import { RootState } from 'modules';
 import getRequest from 'api';
-import {detailRequest}from 'modules/post';
-import {DetailState} from 'modules/post';
+import {detailRequest,DetailState, signRequest}from 'modules/post';
 import { CircularProgressbar,buildStyles} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -34,7 +33,8 @@ const PostDetail:React.FunctionComponent<RouteComponentProps<PathParamsProps>>=(
     const {id}=match.params;
     const dispatch=useDispatch();
     const state=useSelector((state:RootState)=>state.postReducer);
-    const percentage=useMemo(()=> Math.round((data.list.length/data.goalNum)*100),[data.goalNum, data.list.length])
+    const userData=useSelector((state:RootState)=>state.userDataReducer);
+    const percentage=useMemo(()=>Math.round((data.list.length/data.goalNum)*100),[data])
 
     useEffect(()=>{
       dispatch(detailRequest({id}))
@@ -49,9 +49,14 @@ const PostDetail:React.FunctionComponent<RouteComponentProps<PathParamsProps>>=(
       if(state.result==="detail")
       {
         setData(state.data);
-        console.log(state.data);
       }
     }, [state]);
+
+    const onSignOn=()=>{
+      dispatch(signRequest({
+        id
+      }));
+    }
 
     const maskingName = (strName:string)=> {
       if (strName.length > 2) {
@@ -68,43 +73,51 @@ const PostDetail:React.FunctionComponent<RouteComponentProps<PathParamsProps>>=(
       }
     };
 
+  
+
     return (<div>
-       <S.Container>
-      <S.ContainerBox>
-        <S.InfoBox>
-        <S.ImgBox src={imgPath}/>
-        <S.TextBox>
-         
-          <S.ProgressBox>
-            <CircularProgressbar 
-                value={percentage||0} 
-                styles={buildStyles({
-                  textSize: 15,
-                  textColor: "#ff4141",
-                  pathColor: "#ff4141",
-                  trailColor: "rgb(200,200,200)"
-                })}
-                text={`${percentage}% 달성`} 
-                strokeWidth={5}/>
-          </S.ProgressBox>
-          {`${data.createAt.slice(0,10)} ~ ${data.endDate}`}
-          <S.CurNum>{`${data.list.length} / ${data.goalNum}`}</S.CurNum>
-               
-          <S.Message>{percentage>=100&&"목표 달성 성공!"}</S.Message>
-          <S.ApplyBtn> 동의하기 </S.ApplyBtn>
-        </S.TextBox>
-        </S.InfoBox>   
-      </S.ContainerBox>
-      <S.ListBox>
-        동의한 사람들
-        <S.ScrollContainer>
-          {data.list.map((e)=><S.ListItem>
-            {maskingName(e.writer)}
-          </S.ListItem>)}
+    <S.Container>
+        <S.HeadInfo>
+         <S.ContainerBox>
+            <S.InfoBox>
+              <S.ImgBox src={imgPath}/>
+              <S.TextBox> 
+                <S.Title>{data.title}</S.Title>
+                <S.ProgressBox>
+                  <CircularProgressbar 
+                      value={percentage||0} 
+                      styles={buildStyles({
+                      textSize: 15,
+                      textColor: "#ff4141",
+                      pathColor: "#ff4141",
+                      trailColor: "rgb(200,200,200)"
+                      })}
+                      text={`${percentage}% 달성`} 
+                      strokeWidth={5}/>
+                  </S.ProgressBox>
+                  { `${data.createAt.slice(0,10)} ~ ${data.endDate}`}
+                  <S.CurNum>{`${data.list.length} / ${data.goalNum}`}</S.CurNum>
+                  <S.Message>{percentage>=100&&"목표 달성 성공!"}</S.Message>
+                  <S.ApplyBtn onClick={onSignOn}> 동의하기 </S.ApplyBtn>
+                </S.TextBox>
+              </S.InfoBox>   
+            </S.ContainerBox>
+          <S.ListBox>
+             동의한 사람들
+          <S.ScrollContainer>
+            {data.list.map((e)=><S.ListItem>
+              {maskingName(e.writer)}
+            </S.ListItem>)}
         </S.ScrollContainer>
       </S.ListBox>
-    </S.Container>
+    </S.HeadInfo>
+        <S.ContentsBox>
     {data.content}
+    {data.writerId===userData.id&&<S.DeleteButton>삭제하기</S.DeleteButton>}
+    
+    </S.ContentsBox> 
+    </S.Container>
+    
     </div>)
    
 }

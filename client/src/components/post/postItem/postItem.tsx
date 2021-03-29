@@ -37,8 +37,7 @@ const PostItem:React.FC<DataType>=({data})=>{
         }).then((e:any)=>{
             setImgPath(`data:${e.data.contentType};base64,${e.data.base64}`)
           })
-    },[_id])
-
+    },[_id]);
     
     return(
         <S.ItemContainer onClick={()=>{history.push(`/post/${_id}`)}}>

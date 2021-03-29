@@ -36,8 +36,12 @@ const loginReducer=(state:LoginType={
     switch(action.type){
         case LOGIN_REQUEST:
         case LOGIN_SUCCESS:
-        case LOG_OUT:
             return action.payload;
+        case LOG_OUT:
+            return{
+                email:"",
+                password:""
+            }
         default:
             return state;
     }

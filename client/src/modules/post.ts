@@ -20,7 +20,7 @@ export interface DetailState{
     goalNum: number,
     list:ListData[],
     createAt:string,
-    category:string
+    category:string,
   
     
 };
@@ -40,16 +40,17 @@ interface DetailRequestSuccess{
     data:DetailState
 };
 
-type CategoryType="other"|"sport"|"enter"|"individ"|"game"|"all";
+export type CategoryType="other"|"sport"|"enter"|"individ"|"game"|"all"|"area";
 
 const POST_LIST_REQUEST="POST_LIST_REQUEST";
 const POST_SUCCESS="POST_SUCCESS";
 
 const POST_DETAIL_REQUEST="POST_DETAIL_REQUEST";
-
+const POST_SIGN_REQUEST="POST_SIGN_REQUEST";
 
 export const listRequest=createAction<CategoryType>(POST_LIST_REQUEST);
 export const detailRequest=createAction<RequestState>(POST_DETAIL_REQUEST);
+export const signRequest=createAction<RequestState>(POST_SIGN_REQUEST);
 const requestSuccess=createAction<RequestSuccess|DetailRequestSuccess>(POST_SUCCESS);
 
 
@@ -99,10 +100,23 @@ function* postDetailRequest(action:PayloadAction<RequestState>){
          alert(err);
     }
 }
+function* postSignRequest(action:PayloadAction<RequestState>){
+    try{
+        yield call([getRequest(),"get"],`/post/sign/${action.payload.id}`);
+        alert("동의하였습니다.")
+        yield put(detailRequest({id:action.payload.id}));
+    }catch(err){
+        if(err.response.status===404)
+            alert(err.response.data.error);
+        else    
+            alert("예상치 못한 에러");
+    }
+}
 
 function* watchPost(){
     yield takeLatest(POST_LIST_REQUEST,postListRequest);
     yield takeLatest(POST_DETAIL_REQUEST,postDetailRequest);
+    yield takeLatest(POST_SIGN_REQUEST,postSignRequest);
 }
 
 export {postReducer,watchPost};

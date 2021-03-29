@@ -4,7 +4,7 @@ import * as S from 'style/post'
 
 import { RootState} from 'modules';
 import { useDispatch,useSelector } from 'react-redux';
-import { listRequest } from 'modules/post';
+import { listRequest,CategoryType } from 'modules/post';
 
 interface DataType{
         _id:string,
@@ -17,11 +17,11 @@ interface DataType{
         goalNum: number,
         list:object[],
         createAt:string,
-        category:string
+        category:string,
     
 }
 
-type CategoryType="other"|"sport"|"enter"|"individ"|"game"|"all";
+
 
 const Post:React.FC=()=>{
     const [data,setData]=useState<DataType[]>([]);
@@ -43,7 +43,7 @@ const Post:React.FC=()=>{
     },[dispatch]);
 
     useEffect(() => {
-        if(state.result==="list"&&state.data.length>0)
+        if(state.result==="list")
             setData(state.data.reverse());
     }, [state]);
 
@@ -51,7 +51,7 @@ const Post:React.FC=()=>{
         dispatch(listRequest(cat));
     }
 
-
+    
     const renderList=()=>{
         const list=data.slice();
         const sortedList=align==="latest"?data.map((e,i)=><PostItem key={i} data={e}/>):
@@ -81,6 +81,7 @@ const Post:React.FC=()=>{
             <S.NavButton onClick={()=>onCategortyChange("enter")}>연예</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("sport")}>스포츠</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("individ")}>개인</S.NavButton>
+            <S.NavButton onClick={()=>onCategortyChange("area")}>지역</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("other")}>기타</S.NavButton>
         </S.CategoryContainer>
 

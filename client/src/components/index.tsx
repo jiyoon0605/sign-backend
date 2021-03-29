@@ -29,13 +29,20 @@ const Container:React.FC=()=>{
             setText("로그인");
         }
 
-    }, [dispatch, state])
+    }, [dispatch])
 
     useEffect(() => {
+        history.push("/post");
+    }, [])
+
+    useEffect(() => {
+        
         if(state.id||loginState.result==="success")
-            setText("로그아웃");
+            {setText("로그아웃");}
         else
             setText("로그인");
+
+            // console.log(state)
     }, [state,loginState])
     
 
@@ -54,6 +61,7 @@ const Container:React.FC=()=>{
                         if(localStorage.getItem("accessToken")){
                             alert("로그아웃 되었습니다")
                             localStorage.removeItem("accessToken");
+                            setText("로그인");
                             dispatch(logoutRequest({ result:"logout"}));
                         }else{
                             history.push("/login");
@@ -64,13 +72,12 @@ const Container:React.FC=()=>{
                 </S.NavList>
             </S.Header>
         <S.Container>
-            <Redirect to="/post"/>
-            <Switch>
-                <Route path="/register" component={Register}/>
-                <Route path="/login"component={Login}/>
-                <Route path="/write"component={Write}/>
+            <Switch>           
                 <Route exact path="/post"component={Post}/>
-                <Route path="/post/:id" component={PostDetail}/>
+                <Route exact path="/register" component={Register}/>
+                <Route exact path="/login"component={Login}/>
+                <Route exact path="/write"component={Write}/>
+                <Route exact path="/post/:id" component={PostDetail}/>
             </Switch>
         </S.Container>
             

@@ -5,9 +5,8 @@ import * as S from 'style/write';
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
 import {writeRequest}from 'modules/write'
+import { CategoryType } from 'modules/post';
 import {useHistory}from 'react-router'
-
-type CatergoryType="other"|"game"|"enter"|"sports"|"individ";
 
 const Write:React.FC=()=>{
     const [imgData,setImgData]=useState<File>();
@@ -16,7 +15,7 @@ const Write:React.FC=()=>{
     const [content,setContent]=useState<string>("");
     const [num,setNum]=useState<string>("0");
     const [date,setDate]=useState<string>("");
-    const [category,setCategory]=useState<CatergoryType>("other");
+    const [category,setCategory]=useState<CategoryType>("other");
     const textArea=useRef<HTMLTextAreaElement>(null);
 
     const dispatch=useDispatch();
@@ -109,12 +108,13 @@ const Write:React.FC=()=>{
                 <S.Title>마감 날짜</S.Title>
                 <S.TextInput type="date" value={date} onChange={e=>setDate(e.target.value)}/>
                 <S.Title>카테고리</S.Title>
-                <S.CategoryContainer defaultValue="other" value={category} onChange={e=>setCategory(e.target.value as CatergoryType)}>
+                <S.CategoryContainer defaultValue="other" value={category} onChange={e=>setCategory(e.target.value as CategoryType)}>
                     <option value="other">기타</option>
                     <option value="game">게임</option>
                     <option value="enter">연예</option>
                     <option value="sport">스포츠</option>
                     <option value="individ">개인</option>
+                    <option value="area">지역</option>
                 </S.CategoryContainer>
             </S.ContentsContainer>
            

@@ -26,7 +26,7 @@ const upload = multer({
 router.post("/upload", upload.single("img"), (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
-    if (err) res.status(404).send({ message: "올바른 토큰이 아닙니다." });
+    if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
     else {
       const finalImg = {
         filename: req.file.filename,
@@ -100,7 +100,7 @@ router.get("/category/:category", (req, res) => {
   });
 });
 
-router.get("/comment/:id", (req, res) => {
+router.get("/sign/:id", (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
     if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
@@ -108,12 +108,6 @@ router.get("/comment/:id", (req, res) => {
       postSchema
         .findOne({ _id: req.params.id })
         .then((post) => {
-          if (post.writerId === decoded.id) {
-            res
-              .status(404)
-              .send({ error: "자신의 글에는 동의할 수 없습니다." });
-          }
-
           let result = true;
           for (let l of post.list) {
             if (l.writerId == decoded.id) {
@@ -130,14 +124,19 @@ router.get("/comment/:id", (req, res) => {
                 },
               },
               (err) => {
-                if (err) res.status(404).send({ message: "댓글 추가 실패" });
+                if (post.writerId == decoded.id) {
+                  res
+                    .status(404)
+                    .send({ error: "자신의 글에는 동의할 수 없습니다." });
+                } else if (err)
+                  res.status(404).send({ error: "댓글 추가 실패" });
                 else {
                   res.status(200).send({ message: "댓글 추가 성공" });
                 }
               }
             );
           } else {
-            return res.status(404).send({ message: "이미 참여한 글입니다." });
+            return res.status(404).send({ error: "이미 참여한 글입니다." });
           }
         })
         .catch(() =>
