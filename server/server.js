@@ -42,6 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/image", express.static("./uploads"));
 app.use("/auth", userRouter);
 app.use("/post", postRouter);
+app.get("/", (req, res) => res.send("Hello Wrold!"));
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`listen ${process.env.PORT || 5000} port`);
