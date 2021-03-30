@@ -8,7 +8,7 @@ import Write from 'components/write'
 import * as S from 'style/container';
 
 import {logoutRequest}from 'modules/login'
-import {userDataRequest}from 'modules/userData';
+import {userDataRequest, userDataReset}from 'modules/userData';
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
 import Post from 'components/post';
@@ -23,28 +23,20 @@ const Container:React.FC=()=>{
     const [isMenuOpened,setIsmenuOpened]=useState(false);
 
     useEffect(() => {
-        if(localStorage.getItem("accessToken")){
-            dispatch(userDataRequest());
-        }else{
-            setText("로그인");
-        }
-
-    }, [dispatch])
+        if(localStorage.getItem("accessToken")) dispatch(userDataRequest());
+        else dispatch(userDataReset());
+    
+    }, [dispatch]);
 
     useEffect(() => {
         history.push("/post");
-    }, [history])
+    }, [history]);
 
     useEffect(() => {
-        
-        if(state.id||loginState.result==="success")
-            {setText("로그아웃");}
-        else
-            setText("로그인");
+        if(localStorage.getItem("accessToken"))setText("로그아웃");
+        else setText("로그인");
+    }, [state,loginState]);
 
-            // console.log(state)
-    }, [state,loginState])
-    
 
     return(
         <>
@@ -60,9 +52,8 @@ const Container:React.FC=()=>{
                     <S.NavItem onClick={()=>{
                         if(localStorage.getItem("accessToken")){
                             alert("로그아웃 되었습니다")
-                            localStorage.removeItem("accessToken");
-                            setText("로그인");
-                            dispatch(logoutRequest({ result:"logout"}));
+                            dispatch(userDataReset());
+                            dispatch(logoutRequest());
                         }else{
                             history.push("/login");
                         }

@@ -5,7 +5,7 @@ import * as S from 'style/auth';
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
 import {useHistory}from 'react-router'
-
+import {userDataRequest}from 'modules/userData';
 import {loginRequest}from 'modules/login'
 
 const Login:React.FC=()=>{
@@ -33,9 +33,10 @@ const Login:React.FC=()=>{
         dispatch(loginRequest(data));
     };
     useEffect(()=>{
-        if(state.result==="success"){
+        if(state==="access"){
             alert("로그인에 성공하셨습니다!");
             history.push("/post");
+            dispatch(userDataRequest())
         }
     },[state,dispatch,history]);
 

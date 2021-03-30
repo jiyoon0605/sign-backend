@@ -175,6 +175,10 @@ export const ContentsBox=styled.div`
     box-sizing:border-box;
     padding:2rem;
 
+    overflow-wrap: break-word;
+    word-break: break-all;
+    word-wrap: break-word;
+
     @media screen and (max-width:1000px){
         width:100%;
         margin:0 5px;
@@ -182,6 +186,10 @@ export const ContentsBox=styled.div`
     margin-bottom:30px;
 
     position:relative;
+
+    p{
+        margin:.1rem;
+    }
 `;
 
 export const DeleteButton=styled.button`

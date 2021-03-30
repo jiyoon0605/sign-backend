@@ -86,9 +86,8 @@ const Post:React.FC=()=>{
 
          <S.PostContainer>
         {list}
-        {/* {renderList()} */}
          </S.PostContainer>
-
+         <S.FooterContainer></S.FooterContainer>
     </S.Container>
     
 };

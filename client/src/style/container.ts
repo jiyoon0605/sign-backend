@@ -28,7 +28,6 @@ export const Header=styled.header`
     z-index:99;
 
     border-bottom:1px solid rgba(0,0,0,0.2);
-
 `
 export const Logo=styled.div`
     margin-left:1rem;

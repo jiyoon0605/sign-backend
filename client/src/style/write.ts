@@ -109,8 +109,8 @@ export const TextInput=styled.input`
 export const ContentsInput=styled.textarea`
     resize:none;
     width:90%;
+    height:2.5rem;
     border:1px solid #FF414188;
-
     font-size:15px;
     font-family:"Medium";
 

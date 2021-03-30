@@ -1,10 +1,10 @@
 import React, { useEffect, useState,useMemo } from 'react';
 import * as S from 'style/postDetail';
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import {useDispatch,useSelector}from 'react-redux';
 import { RootState } from 'modules';
 import getRequest from 'api';
-import {detailRequest,DetailState, signRequest}from 'modules/post';
+import {deleteRequest, detailRequest,DetailState, signRequest}from 'modules/post';
 import { CircularProgressbar,buildStyles} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -35,6 +35,7 @@ const PostDetail:React.FunctionComponent<RouteComponentProps<PathParamsProps>>=(
     const state=useSelector((state:RootState)=>state.postReducer);
     const userData=useSelector((state:RootState)=>state.userDataReducer);
     const percentage=useMemo(()=>Math.round((data.list.length/data.goalNum)*100),[data])
+    const history=useHistory();
 
     useEffect(()=>{
       dispatch(detailRequest({id}))
@@ -73,8 +74,10 @@ const PostDetail:React.FunctionComponent<RouteComponentProps<PathParamsProps>>=(
       }
     };
 
-  
-
+    const onDelete=()=>{
+      dispatch(deleteRequest({id}));
+      history.push("/post");
+    }
     return (<div>
     <S.Container>
         <S.HeadInfo>
@@ -112,10 +115,13 @@ const PostDetail:React.FunctionComponent<RouteComponentProps<PathParamsProps>>=(
       </S.ListBox>
     </S.HeadInfo>
         <S.ContentsBox>
-    {data.content}
-    {data.writerId===userData.id&&<S.DeleteButton>삭제하기</S.DeleteButton>}
+          {data.content.split(/\n/).map((e,i)=>{
+            return <p key={i}>{e}<br/></p>
+          })}
+         {data.writerId===userData.id&&<S.DeleteButton onClick={onDelete}>삭제하기</S.DeleteButton>}
     
     </S.ContentsBox> 
+    
     </S.Container>
     
     </div>)

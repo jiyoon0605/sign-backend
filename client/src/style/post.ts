@@ -52,10 +52,13 @@ export const MenuBox=styled.nav`
 export const SelectButton=styled.select`
     width:5rem;
     height:100%;
-    margin-left:1rem;
+    margin:0 1rem;
     padding-left:5px;
     border:none;
     font-size:.8rem;
+
+    background-color:black;
+    color:white;
 `;
 //
 //
@@ -172,20 +175,26 @@ export const CategoryContainer=styled.nav`
         overflow:hidden;
         overflow-x:scroll;
     }
-
+    margin-bottom:5rem;
+    background-color:black;
+    color:white;
 `;
+
 export const NavButton=styled.button`
     width:6rem;
     height:100%;
     border:none;
     padding:0 1rem;
-    background-color:white;
+
+    background-color:black;
+    color:white;
+    
     display:flex;
     justify-content:center;
     align-items:center;
     font-size:.8rem;
     &:hover{
-        background-color:rgb(200,200,200);
+        background-color:rgba(200,200,200,0.5);
     }
     @media screen and (max-width:1000px){
         font-size:.3rem;
@@ -208,4 +217,16 @@ export const CategoeyBox=styled.div`
 
     font-size:.7rem;
     color:white;
-`
+    
+`;
+
+//
+//
+//footer
+export const FooterContainer=styled.footer`
+    margin-top:20rem;
+    width:100vw;
+    height:15rem;
+    box-shadow:-2px -2px 3px 0 rgba(0,0,0,0.5);
+    background-color:black;
+`;

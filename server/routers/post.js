@@ -115,6 +115,12 @@ router.get("/sign/:id", (req, res) => {
               break;
             }
           }
+          if (post.writerId == decoded.id) {
+            res
+              .status(404)
+              .send({ error: "자신의 글에는 동의할 수 없습니다." });
+            return;
+          }
           if (result) {
             postSchema.findByIdAndUpdate(
               req.params.id,
@@ -124,12 +130,7 @@ router.get("/sign/:id", (req, res) => {
                 },
               },
               (err) => {
-                if (post.writerId == decoded.id) {
-                  res
-                    .status(404)
-                    .send({ error: "자신의 글에는 동의할 수 없습니다." });
-                } else if (err)
-                  res.status(404).send({ error: "댓글 추가 실패" });
+                if (err) res.status(404).send({ error: "댓글 추가 실패" });
                 else {
                   res.status(200).send({ message: "댓글 추가 성공" });
                 }
@@ -142,6 +143,19 @@ router.get("/sign/:id", (req, res) => {
         .catch(() =>
           res.status(404).send({ error: "존재하지 않는 글입니다." })
         );
+    }
+  });
+});
+
+router.delete("/:id", (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  jwt.verify(token, process.env.SECRETKEY, async (err, decoded) => {
+    if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
+    else {
+      const result = await postSchema.remove({ id: req.body.id }, (err) => {
+        if (err) return res.status(500).json({ message: "Delete Fail!" });
+        else return res.status(200).json({ message: "success!" });
+      });
     }
   });
 });

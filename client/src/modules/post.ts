@@ -47,10 +47,12 @@ const POST_SUCCESS="POST_SUCCESS";
 
 const POST_DETAIL_REQUEST="POST_DETAIL_REQUEST";
 const POST_SIGN_REQUEST="POST_SIGN_REQUEST";
+const POST_DELETE_REQUEST="POST_DELETE_REQUEST";
 
 export const listRequest=createAction<CategoryType>(POST_LIST_REQUEST);
 export const detailRequest=createAction<RequestState>(POST_DETAIL_REQUEST);
 export const signRequest=createAction<RequestState>(POST_SIGN_REQUEST);
+export const deleteRequest=createAction<RequestState>(POST_DELETE_REQUEST);
 const requestSuccess=createAction<RequestSuccess|DetailRequestSuccess>(POST_SUCCESS);
 
 
@@ -112,11 +114,24 @@ function* postSignRequest(action:PayloadAction<RequestState>){
             alert("예상치 못한 에러");
     }
 }
+function* postDeleteRequest(action:PayloadAction<RequestState>){
+    try{
+        yield call([getRequest(),"delete"],`/post/${action.payload.id}`);
+        alert("삭제 완료하였습니다.")
+    }catch(err){
+        if(err.response.status===404)
+            alert(err.response.data.error);
+        else    
+            alert("예상치 못한 에러");
+    }
+
+}
 
 function* watchPost(){
     yield takeLatest(POST_LIST_REQUEST,postListRequest);
     yield takeLatest(POST_DETAIL_REQUEST,postDetailRequest);
     yield takeLatest(POST_SIGN_REQUEST,postSignRequest);
+    yield takeLatest(POST_DELETE_REQUEST,postDeleteRequest);
 }
 
 export {postReducer,watchPost};

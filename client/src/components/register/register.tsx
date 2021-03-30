@@ -29,13 +29,12 @@ const Regiter:React.FC=()=>{
     const [authNum,setAuthnum]=useState<string>("-")
 
     useEffect(()=>{
-        if(state.result==="success"){
+        if(state==="complate"){
             alert("회원가입에 성공하였습니다!");
             dispatch(registerComplate());
             histroy.push("/login")
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[state])
+    },[dispatch, histroy, state])
 
     const reducer=(state:registerType,action:actionType):registerType=>{
         switch(action.type){

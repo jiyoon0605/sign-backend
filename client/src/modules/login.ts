@@ -2,46 +2,37 @@ import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import {  call,  put, takeLatest } from "redux-saga/effects";
 import axios from 'axios';
 
+type State="init"|"request"|"access";
+
+
+
 interface LoginState{
-    result?:"pendding",
+    result?:"request",
     email:string,
     password:string
 };
 
-interface LoginSuccess{
-    result:"success",
-};
-
-
-interface LogOut{
-    result:"logout"
-}
-
-type LoginType=LoginState|LoginSuccess|LogOut;
 
 const LOGIN_REQUEST="LOGIN_REQUEST";
 const LOGIN_SUCCESS="LOGIN_SUCCESS";
 const LOG_OUT="LOG_OUT";
 
 export const loginRequest=createAction<LoginState>(LOGIN_REQUEST);
-const loginSuccess=createAction<LoginSuccess>(LOGIN_SUCCESS);
-export const logoutRequest=createAction<LogOut>(LOG_OUT);
+const loginSuccess=createAction(LOGIN_SUCCESS);
+export const logoutRequest=createAction(LOG_OUT);
 
-type LoginActionType=PayloadAction<LoginState>|PayloadAction<LoginSuccess>|PayloadAction<LogOut>;
+type LoginActionType=PayloadAction<LoginState>|PayloadAction<State>;
 
-const loginReducer=(state:LoginType={
-    email:"",
-    password:""
-},action:LoginActionType)=>{
+
+const loginReducer=(state:State="init",action:LoginActionType):State=>{
     switch(action.type){
         case LOGIN_REQUEST:
+            return "request";
         case LOGIN_SUCCESS:
-            return action.payload;
+            return "access"
         case LOG_OUT:
-            return{
-                email:"",
-                password:""
-            }
+            localStorage.removeItem("accessToken");
+            return "init"
         default:
             return state;
     }
@@ -51,9 +42,7 @@ const loginReducer=(state:LoginType={
 function* request(action:LoginActionType){
     try{
         const {data} = yield call([axios,"post"],"/auth/login",action.payload);
-         yield put(loginSuccess({
-             result:"success"
-         }));     
+         yield put(loginSuccess());     
          localStorage.setItem("accessToken",data.token);
     }
     catch(err){
