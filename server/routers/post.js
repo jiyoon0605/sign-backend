@@ -152,9 +152,17 @@ router.delete("/:id", (req, res) => {
   jwt.verify(token, process.env.SECRETKEY, async (err, decoded) => {
     if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
     else {
-      const result = await postSchema.remove({ id: req.body.id }, (err) => {
-        if (err) return res.status(500).json({ message: "Delete Fail!" });
-        else return res.status(200).json({ message: "success!" });
+      postSchema.findOne({ _id: req.params.id }, (err, post) => {
+        if (err || post === null)
+          return res.status(404).send({ error: "게시물이 존재하지 않습니다." });
+
+        postSchema.remove({ id: req.body.id }, (err) => {
+          fs.unlink(`uploads/${post.img.filename}`, (err) => {
+            if (err) return res.status(500).json({ message: "Delete Fail!" });
+          });
+          if (err) return res.status(500).json({ message: "Delete Fail!" });
+          else return res.status(200).json({ message: "success!" });
+        });
       });
     }
   });
