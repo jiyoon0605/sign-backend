@@ -8,6 +8,9 @@ const moongose = require("mongoose");
 const userRouter = require("./routers/user");
 const postRouter = require("./routers/post");
 const uri = process.env.MONGODB_URI;
+
+console.log(uri === true);
+
 moongose
   .connect(uri || process.env.MONGO_URL, {
     useNewUrlParser: true,
