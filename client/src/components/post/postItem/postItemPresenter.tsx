@@ -1,8 +1,8 @@
 import React  from 'react'
 import * as S from 'style/post'
-import ProgressBar from "@ramonak/react-progress-bar";
+//import ProgressBar from "";
 import {DataType}from '../postContainer'
-
+import Progerssbar from './progress'
 
 type Props={
     gotoDetail:()=>void,
@@ -35,18 +35,10 @@ const PostItemPresenter:React.FC<Props>=({gotoDetail,imgPath,data,percentage})=>
                 <S.CategoeyBox>
                 {data.category}
                 </S.CategoeyBox>
+               
                 {data.activation?
-                <ProgressBar 
-                    completed={percentage} 
-                    bgColor="#FF4141"
-                    height="1rem"
-                    width="100%"
-                    labelAlignment="left"
-                    labelColor={percentage>5?"white":"black"}
-                    labelSize=".5rem"
-                    margin="1rem 10px 0 0"
-                    borderRadius="0"/>
-                    :<S.Termination>{ percentage>=100?"목표 달성 성공!":`마감되었습니다!   ${percentage}% 달성!`}</S.Termination>}
+                 <Progerssbar percentage={percentage}/>
+                :<S.Termination>{ percentage>=100?"목표 달성 성공!":`마감되었습니다!   ${percentage}% 달성!`}</S.Termination>}
                 
             </S.ItemMain>
             {percentage>=100&&
