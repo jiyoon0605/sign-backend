@@ -73,9 +73,10 @@ export const ProgressBox=styled.div`
     font-family:"Bold";
 `;
 export const Message=styled.div`
-    margin-top:20px;
+    padding:.5rem 3rem;
     font-family:"Bold";
-    color:#ff4141;
+    color:white;
+    background-color:#ff4141;
 
 `;
 export const CurNum=styled.div`

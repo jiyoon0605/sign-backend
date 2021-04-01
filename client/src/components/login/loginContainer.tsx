@@ -1,14 +1,14 @@
 import React,{useEffect, useState} from 'react';
 
-import * as S from 'style/auth';
-
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
 import {useHistory}from 'react-router'
 import {userDataRequest}from 'modules/userData';
 import {loginRequest}from 'modules/login'
 
-const Login:React.FC=()=>{
+import LoginPresernter from './loginPresenter'
+
+const LoginConainer:React.FC=()=>{
     const [email,setEmail]=useState<string>("");
     const [password,setPassword]=useState<string>("");
     const state=useSelector((state:RootState)=>state.loginReducer);
@@ -40,19 +40,12 @@ const Login:React.FC=()=>{
         }
     },[state,dispatch,history]);
 
-    return <S.Container>
-        <S.Title>로그인</S.Title>
-        <S.InputField placeholder="이메일" value={email} onChange={e=>setEmail(e.target.value)}/>
-        <S.InputField placeholder="비밀번호" type="password" 
-        value={password} onChange={e=>setPassword(e.target.value)} 
-        onKeyUp={(e)=>{
-            if(e.key === "Enter"){
-                onHandleClick();
-            }
-        }}/>
-        <S.SubmitButton onClick={onHandleClick} >로그인</S.SubmitButton>
-        <S.LinkBtn to="/register">회원가입 하기</S.LinkBtn>
-    </S.Container>
+    return <LoginPresernter 
+                email={email} 
+                password={password} 
+                setEmail={setEmail} 
+                setPassword={setPassword} 
+                onHandleClick={onHandleClick}/>
 };
 
-export default Login;
+export default LoginConainer;

@@ -68,6 +68,10 @@ const postSchema = new Schema({
     type: String,
     default: "other",
   },
+  activation: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model("Post", postSchema);

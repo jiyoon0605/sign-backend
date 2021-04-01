@@ -2,39 +2,30 @@ import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import clinet from 'api';
 import {  call,  put, takeLatest } from "redux-saga/effects";
 
+type State="init"|"request"|"complate";
 
 interface FormDataType{
-    result?:"pending",
+    result?:"request",
     data:FormData
 }
 
-interface WriteSuccess{
-    result:"success",
-};
-
-interface WriteFail{
-    result:"fail"
-    reason:string|Error
-};
-
-type WriteType=FormDataType|WriteSuccess|WriteFail;
 
 const WRITE_REQUEST="WRITE_REQUEST";
 const WRITE_SUCCESS="WRITE_SUCCESS";
-const WRITE_FAIL="WRITE_FAIL";
+const WRITE_COMPLATE="WRITE_COMPLATE";
 
 export const writeRequest=createAction<FormDataType>(WRITE_REQUEST);
-const writeSuccess=createAction<WriteSuccess>(WRITE_SUCCESS);
-const wrtieFail=createAction<WriteFail>(WRITE_FAIL);
+const writeSuccess=createAction(WRITE_SUCCESS);
+export const writeComplate=createAction(WRITE_COMPLATE)
 
-type WriteActionType=PayloadAction<FormDataType>|PayloadAction<WriteSuccess>|PayloadAction<WriteFail>;
+type WriteActionType=PayloadAction<FormDataType>
 
-const writeReducer=(state:WriteType={result:"pending", data:new FormData()},action:WriteActionType):WriteType=>{
+const writeReducer=(state:State="init",action:WriteActionType):State=>{
     switch(action.type){
-        case WRITE_REQUEST:
         case WRITE_SUCCESS:
-        case WRITE_FAIL:
-            return action.payload;
+            return "complate"
+        case WRITE_COMPLATE:
+            return "init"
         default:
             return state;
     }
@@ -47,14 +38,8 @@ function* request(action:PayloadAction<FormDataType>){
     console.log(userData.data);
     try{
         yield call([clinet(),"post"],"/post/upload",userData.data);
-        yield put(writeSuccess({
-            result:"success",
-        }))
+        yield put(writeSuccess())
     }catch(e){
-        yield put(wrtieFail({
-            result:"fail",
-            reason:e
-        }))
     }
 }
 

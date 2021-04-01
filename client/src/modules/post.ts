@@ -21,6 +21,7 @@ export interface DetailState{
     list:ListData[],
     createAt:string,
     category:string,
+    activation:boolean
   
     
 };

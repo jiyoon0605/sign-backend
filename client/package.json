@@ -17,6 +17,7 @@
     "@types/redux-saga": "^0.10.5",
     "@types/styled-components": "^5.1.9",
     "axios": "^0.21.1",
+    "enzyme-adapter-react-16": "^1.15.6",
     "history": "^5.0.0",
     "react": "^17.0.1",
     "react-circular-progressbar": "^2.0.3",
@@ -55,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "@types/enzyme": "^3.10.8",
     "@types/react-router-dom": "^5.1.7"
   }
 }

@@ -2,7 +2,7 @@ import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import getRequest from 'api';
 import {  call,  put, takeLatest } from "redux-saga/effects";
 
-interface UserData{
+export interface UserData{
     result?:"request"
     name:string,
     id:string

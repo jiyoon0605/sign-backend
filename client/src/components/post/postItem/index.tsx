@@ -1,2 +1,2 @@
-import PostItem from './postItem'
+import PostItem from './postItemContainer'
 export default PostItem;

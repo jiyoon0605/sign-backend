@@ -1,2 +1,2 @@
-import Post from './post';
+import Post from './postContainer';
 export default Post;

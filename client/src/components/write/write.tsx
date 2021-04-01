@@ -4,7 +4,7 @@ import * as S from 'style/write';
 
 import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
-import {writeRequest}from 'modules/write'
+import {writeComplate, writeRequest}from 'modules/write'
 import { CategoryType } from 'modules/post';
 import {useHistory}from 'react-router'
 
@@ -27,14 +27,12 @@ const Write:React.FC=()=>{
             alert("로그인 후 이용 가능합니다.");
             histroy.push("/post");
         }
-        if(state.result==="fail"){
-            alert(state.reason)
-        }
-        else if(state.result==="success"){
+        else if(state==="complate"){
             alert("글이 등록되었습니다!");
+            dispatch(writeComplate());
             histroy.push("/post");
         }
-    },[state,histroy])
+    },[state, histroy, dispatch])
 
     const imageReader = (e:File) => {
         const fileReader = new FileReader();
@@ -74,6 +72,17 @@ const Write:React.FC=()=>{
         
       };
 
+      const getDateString = () => {
+        const date = new Date();
+        date.setDate(date.getDate()+1);
+        const year = date.getFullYear();
+        const month = ("0" + (1 + date.getMonth())).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+
+        return `${year}-${month}-${day}`;
+      };
+
+
     return <S.Container>
         <S.ContainerBox>
             <S.ImageContainer src={imgPath}/>
@@ -106,7 +115,7 @@ const Write:React.FC=()=>{
                            
                              }}/>
                 <S.Title>마감 날짜</S.Title>
-                <S.TextInput type="date" value={date} onChange={e=>setDate(e.target.value)}/>
+                <S.TextInput type="date" value={date} onChange={e=>setDate(e.target.value)} min={getDateString()}/>
                 <S.Title>카테고리</S.Title>
                 <S.CategoryContainer defaultValue="other" value={category} onChange={e=>setCategory(e.target.value as CategoryType)}>
                     <option value="other">기타</option>

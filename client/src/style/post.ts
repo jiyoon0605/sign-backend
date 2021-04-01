@@ -63,7 +63,8 @@ export const SelectButton=styled.select`
 //
 //
 //postItem
-export const ItemContainer=styled.div`
+export const ItemContainer=styled.article`
+    position:relative;
     cursor: pointer;
     width:55rem;
     height:15rem;
@@ -159,6 +160,18 @@ export const DateText=styled.h5`
     font-weight:100;
 `;
 
+export const Resultlabel=styled.div`
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:10;
+    padding:.3rem;
+
+    background-color: #ff4141;
+    color: white;
+    font-family:"Bold";
+`
+
 //
 //
 //category
@@ -220,11 +233,20 @@ export const CategoeyBox=styled.div`
     
 `;
 
+export const Termination=styled.div`
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:.3rem;
+    font-family:"Bold";
+    color:#FF4141;
+`
+
 //
 //
 //footer
 export const FooterContainer=styled.footer`
-    margin-top:20rem;
+    margin-top:10rem;
     width:100vw;
     height:15rem;
     box-shadow:-2px -2px 3px 0 rgba(0,0,0,0.5);

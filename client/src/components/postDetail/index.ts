@@ -1,2 +1,2 @@
-import PostDetail from './postDetail';
+import PostDetail from './postDetailContainer';
 export default PostDetail;
