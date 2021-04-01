@@ -38,7 +38,7 @@ const PostItemPresenter:React.FC<Props>=({gotoDetail,imgPath,data,percentage})=>
                 {data.activation?
                 <ProgressBar 
                     completed={percentage} 
-                    bgcolor="#FF4141"
+                    bgColor="#FF4141"
                     height="1rem"
                     width="100%"
                     labelAlignment="left"
