@@ -90,9 +90,10 @@ const login = async (req, res) => {
       const hashPassword = crypto
         .createHash("sha512")
         .update(req.body.password + user[0].salt)
-        .digest("hex");
+        .digest("hex")
+        .catch(() => res.status(403).json({ error: "비번 " }));
       if (hashPassword !== user[0].password) {
-        res.status(404).json({ error: "비밀번호가 틀렸습니다." });
+        return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
       }
       const token = jwt.sign(
         {
@@ -114,17 +115,18 @@ const login = async (req, res) => {
           expiresIn: "30d",
         }
       );
-      res.cookie("user", token);
-      res.status(201).json({
+      //res.cookie("user", token);
+      return res.status(201).json({
         result: "ok",
         token,
         refreshToken,
       });
     } else {
-      res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
+      return res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
     }
   } catch (err) {
     console.log(err);
+    res.status(404).json({ error: err });
     res.status(404).json({ error: err });
   }
 };
