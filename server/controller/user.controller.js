@@ -86,7 +86,7 @@ const sendEmail = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await userSchema.find({ email: req.body.email });
-    if (user.length) {
+    if (user) {
       const hashPassword = crypto
         .createHash("sha512")
         .update(req.body.password + user[0].salt)
