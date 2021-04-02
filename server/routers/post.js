@@ -2,10 +2,6 @@ require("dotenv").config({ path: "../../.env" });
 const multer = require("multer");
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-const postSchema = require("../schemas/post");
-let jwt = require("jsonwebtoken");
-const fs = require("fs");
 const controller = require("../controller/post.controller");
 
 const upload = multer({

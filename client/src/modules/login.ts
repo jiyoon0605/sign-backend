@@ -1,6 +1,6 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import {  call,  put, takeLatest } from "redux-saga/effects";
-import axios from 'axios';
+import getRequest from 'api';
 
 type State="init"|"request"|"access";
 
@@ -41,7 +41,7 @@ const loginReducer=(state:State="init",action:LoginActionType):State=>{
 
 function* request(action:LoginActionType){
     try{
-        const {data} = yield call([axios,"post"],"/auth/login",action.payload);
+        const {data} = yield call([getRequest(),"post"],"/auth/login",action.payload);
          yield put(loginSuccess());     
          localStorage.setItem("accessToken",data.token);
     }

@@ -40,6 +40,7 @@ function* request(action:PayloadAction<FormDataType>){
         yield call([clinet(),"post"],"/post/upload",userData.data);
         yield put(writeSuccess())
     }catch(e){
+        alert("게시물이 등록되지 않았습니다.")
     }
 }
 

@@ -1,6 +1,6 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import {  call,  put, takeLatest } from "redux-saga/effects";
-import axios from 'axios';
+import getRequest from 'api';
 
 type State="init"|"request"|"complate";
 
@@ -40,7 +40,7 @@ const registerReducer=(state:State="init",action:RegisterActionTypes):State=>{
 function* request(action:RegisterActionTypes){
     const data=action.payload;
     try{
-        yield call([axios,"post"],"/auth/register",data);
+        yield call([getRequest(),"post"],"/auth/register",data);
         yield put(registerSuccess());
     }
     catch(err){
