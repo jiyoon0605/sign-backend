@@ -87,11 +87,10 @@ const login = async (req, res) => {
   try {
     const user = await userSchema.find({ email: req.body.email });
     if (user) {
-      // const hashPassword = crypto
-      //   .createHash("sha512")
-      //   .update(req.body.password + user[0].salt)
-      //   .digest("hex")
-      //   .catch(() => res.status(403).json({ error: "비번 " }));
+      const hashPassword = crypto
+        .createHash("sha512")
+        .update(req.body.password + user[0].salt)
+        .digest("hex");
       // if (hashPassword !== user[0].password) {
       //   return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
       // }
