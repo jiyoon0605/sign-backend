@@ -84,50 +84,43 @@ const sendEmail = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  try {
-    const user = await userSchema.find({ email: req.body.email });
-    console.log(user);
-    if (user.length) {
-      const hashPassword = crypto
-        .createHash("sha512")
-        .update(req.body.password + user[0].salt)
-        .digest("hex");
-      if (hashPassword !== user[0].password) {
-        res.status(404).json({ error: "비밀번호가 틀렸습니다." });
-      }
-      const token = jwt.sign(
-        {
-          id: user[0].id,
-          email: user[0].userEmail,
-          name: user[0].name,
-        },
-        process.env.SECRETKEY,
-        {
-          expiresIn: "12h",
-        }
-      );
-      const refreshToken = jwt.sign(
-        {
-          type: "refresh",
-        },
-        process.env.SECRETKEY,
-        {
-          expiresIn: "30d",
-        }
-      );
-      res.cookie("user", token);
-      res.status(201).json({
-        result: "ok",
-        token,
-        refreshToken,
-      });
-    } else {
-      res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
+  const user = await userSchema.find({ email: req.body.email });
+  if (user.length) {
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(req.body.password + user[0].salt)
+      .digest("hex");
+    if (hashPassword !== user[0].password) {
+      return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
     }
-  } catch (err) {
-    console.log(err);
-    const user = await userSchema.find({ email: req.body.email });
-    res.status(404).json({ user });
+    const token = jwt.sign(
+      {
+        id: user[0].id,
+        email: user[0].userEmail,
+        name: user[0].name,
+      },
+      process.env.SECRETKEY,
+      {
+        expiresIn: "12h",
+      }
+    );
+    const refreshToken = jwt.sign(
+      {
+        type: "refresh",
+      },
+      process.env.SECRETKEY,
+      {
+        expiresIn: "30d",
+      }
+    );
+    res.cookie("user", token);
+    return res.status(201).json({
+      result: "ok",
+      token,
+      refreshToken,
+    });
+  } else {
+    return res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
   }
 };
 
