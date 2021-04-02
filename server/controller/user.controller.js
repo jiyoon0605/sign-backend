@@ -126,7 +126,8 @@ const login = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(404).json({ err });
+    const user = await userSchema.find({ email: req.body.email });
+    res.status(404).json({ user });
   }
 };
 
