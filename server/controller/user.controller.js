@@ -91,20 +91,20 @@ const login = async (req, res) => {
         .createHash("sha512")
         .update(req.body.password + user[0].salt)
         .digest("hex");
-      // if (hashPassword !== user[0].password) {
-      //   return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
-      // }
-      // const token = jwt.sign(
-      //   {
-      //     id: user[0].id,
-      //     email: user[0].userEmail,
-      //     name: user[0].name,
-      //   },
-      //   process.env.SECRETKEY,
-      //   {
-      //     expiresIn: "12h",
-      //   }
-      // );
+      if (hashPassword !== user[0].password) {
+        return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
+      }
+      const token = jwt.sign(
+        {
+          id: user[0]._id,
+          email: user[0].userEmail,
+          name: user[0].name,
+        },
+        process.env.SECRETKEY,
+        {
+          expiresIn: "12h",
+        }
+      );
       // const refreshToken = jwt.sign(
       //   {
       //     type: "refresh",
@@ -114,11 +114,11 @@ const login = async (req, res) => {
       //     expiresIn: "30d",
       //   }
       // );
-      // res.cookie("user", token);
+      res.cookie("user", token);
       return res.status(201).json({
         result: "ok",
         user,
-        // token,
+        token,
         // refreshToken,
       });
     } else {
