@@ -10,7 +10,7 @@ const postRouter = require("./routers/post");
 const uri = process.env.MONGODB_URI;
 
 moongose
-  .connect(uri || process.env.MONGO_URL, {
+  .connect(uri || process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
