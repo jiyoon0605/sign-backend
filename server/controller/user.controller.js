@@ -95,31 +95,31 @@ const login = async (req, res) => {
       if (hashPassword !== user[0].password) {
         return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
       }
-      const token = jwt.sign(
-        {
-          id: user[0].id,
-          email: user[0].userEmail,
-          name: user[0].name,
-        },
-        process.env.SECRETKEY,
-        {
-          expiresIn: "12h",
-        }
-      );
-      const refreshToken = jwt.sign(
-        {
-          type: "refresh",
-        },
-        process.env.SECRETKEY,
-        {
-          expiresIn: "30d",
-        }
-      );
+      // const token = jwt.sign(
+      //   {
+      //     id: user[0].id,
+      //     email: user[0].userEmail,
+      //     name: user[0].name,
+      //   },
+      //   process.env.SECRETKEY,
+      //   {
+      //     expiresIn: "12h",
+      //   }
+      // );
+      // const refreshToken = jwt.sign(
+      //   {
+      //     type: "refresh",
+      //   },
+      //   process.env.SECRETKEY,
+      //   {
+      //     expiresIn: "30d",
+      //   }
+      // );
       //res.cookie("user", token);
       return res.status(201).json({
         result: "ok",
-        token,
-        refreshToken,
+        // token,
+        // refreshToken,
       });
     } else {
       return res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
