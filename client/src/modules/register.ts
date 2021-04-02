@@ -1,6 +1,7 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import {  call,  put, takeLatest } from "redux-saga/effects";
-import getRequest from 'api';
+
+import axios from 'axios';
 
 type State="init"|"request"|"complate";
 
@@ -40,7 +41,10 @@ const registerReducer=(state:State="init",action:RegisterActionTypes):State=>{
 function* request(action:RegisterActionTypes){
     const data=action.payload;
     try{
-        yield call([getRequest(),"post"],"/auth/register",data);
+        const client=axios.create({
+            baseURL:"https://dsm-sign.herokuapp.com",
+        });
+        yield call([client,"post"],"/auth/register",data);
         yield put(registerSuccess());
     }
     catch(err){

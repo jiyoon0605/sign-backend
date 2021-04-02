@@ -124,7 +124,7 @@ const login = async (req, res) => {
       res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
     }
   } catch (err) {
-    res.status(404).json({ error: "err" });
+    res.status(404).json({ error: err });
   }
 };
 

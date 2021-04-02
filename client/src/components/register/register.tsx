@@ -91,7 +91,10 @@ const Regiter:React.FC=()=>{
         const data={
             email:registerData.email
         };
-        axios.post("auth/sendEmail",data)
+        const client=axios.create({
+            baseURL:"https://dsm-sign.herokuapp.com",
+        });
+        client.post("auth/sendEmail",data)
         .then(e=>{
             alert("인증번호가 발송되었습니다!");
             setAuthnum(String(e.data.msg));

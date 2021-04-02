@@ -1,6 +1,6 @@
 import { createAction,  PayloadAction } from "@reduxjs/toolkit";
 import {  call,  put, takeLatest } from "redux-saga/effects";
-import getRequest from 'api';
+import axios from 'axios';
 
 type State="init"|"request"|"access";
 
@@ -41,7 +41,10 @@ const loginReducer=(state:State="init",action:LoginActionType):State=>{
 
 function* request(action:LoginActionType){
     try{
-        const {data} = yield call([getRequest(),"post"],"/auth/login",action.payload);
+        const client=axios.create({
+            baseURL:"https://dsm-sign.herokuapp.com",
+        });
+        const {data} = yield call([client,"post"],"/auth/login",action.payload);
          yield put(loginSuccess());     
          localStorage.setItem("accessToken",data.token);
     }
