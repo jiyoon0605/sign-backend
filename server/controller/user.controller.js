@@ -87,35 +87,35 @@ const login = async (req, res) => {
   try {
     const user = await userSchema.find({ email: req.body.email });
     if (user) {
-      const hashPassword = crypto
-        .createHash("sha512")
-        .update(req.body.password + user[0].salt)
-        .digest("hex")
-        .catch(() => res.status(403).json({ error: "비번 " }));
-      if (hashPassword !== user[0].password) {
-        return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
-      }
-      // const token = jwt.sign(
-      //   {
-      //     id: user[0].id,
-      //     email: user[0].userEmail,
-      //     name: user[0].name,
-      //   },
-      //   process.env.SECRETKEY,
-      //   {
-      //     expiresIn: "12h",
-      //   }
-      // );
-      // const refreshToken = jwt.sign(
-      //   {
-      //     type: "refresh",
-      //   },
-      //   process.env.SECRETKEY,
-      //   {
-      //     expiresIn: "30d",
-      //   }
-      // );
-      //res.cookie("user", token);
+      // const hashPassword = crypto
+      //   .createHash("sha512")
+      //   .update(req.body.password + user[0].salt)
+      //   .digest("hex")
+      //   .catch(() => res.status(403).json({ error: "비번 " }));
+      // if (hashPassword !== user[0].password) {
+      //   return res.status(404).json({ error: "비밀번호가 틀렸습니다." });
+      // }
+      const token = jwt.sign(
+        {
+          id: user[0].id,
+          email: user[0].userEmail,
+          name: user[0].name,
+        },
+        process.env.SECRETKEY,
+        {
+          expiresIn: "12h",
+        }
+      );
+      const refreshToken = jwt.sign(
+        {
+          type: "refresh",
+        },
+        process.env.SECRETKEY,
+        {
+          expiresIn: "30d",
+        }
+      );
+      res.cookie("user", token);
       return res.status(201).json({
         result: "ok",
         user,
