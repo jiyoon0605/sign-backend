@@ -56,31 +56,33 @@ const sendEmail = async (req, res) => {
     number -= 1000000;
   }
 
-  let transporter = nodemailer.createTransport({
-    host: "smtp.naver.com",
-    secure: true,
-    auth: {
-      user: process.env.AUTHUSER,
-      pass: process.env.AUTHPASS,
-    },
-  });
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.naver.com",
+      secure: true,
+      auth: {
+        user: process.env.AUTHUSER,
+        pass: process.env.AUTHPASS,
+      },
+    });
 
-  let mailOptions = {
-    from: process.env.AUTHUSER,
-    to: userEmail,
-    subject: "Sign!의 인증번호 입니다.",
-    text: String(number),
-  };
+    let mailOptions = {
+      from: process.env.AUTHUSER,
+      to: userEmail,
+      subject: "Sign!의 인증번호 입니다.",
+      text: String(number),
+    };
 
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      res.json({ msg: err });
-    } else {
-      res.json({ msg: number });
-    }
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        res.status(404).send({ error: err });
+      } else {
+        res.status(201).send({ msg: number });
+      }
 
-    transporter.close();
-  });
+      transporter.close();
+    });
+  } catch {}
 };
 
 const login = async (req, res) => {
@@ -117,7 +119,6 @@ const login = async (req, res) => {
       res.cookie("user", token);
       return res.status(201).json({
         result: "ok",
-        user,
         token,
         refreshToken,
       });
