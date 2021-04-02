@@ -86,6 +86,7 @@ const sendEmail = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await userSchema.find({ email: req.body.email });
+    console.log(user);
     if (user.length) {
       const hashPassword = crypto
         .createHash("sha512")
@@ -124,7 +125,8 @@ const login = async (req, res) => {
       res.status(404).json({ error: "이메일을 다시 확인해 주세요." });
     }
   } catch (err) {
-    res.status(404).json({ error: err });
+    console.log(err);
+    res.status(404).json({ err });
   }
 };
 
