@@ -11,7 +11,7 @@ export const Header=styled.header`
     left:0;
     right:0;
 
-    height:80px;
+    height:5rem;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -19,6 +19,7 @@ export const Header=styled.header`
     @media screen and (max-width:1000px){
         margin:0;
         padding:0;
+        height:3rem;
     }
 
     .link{
@@ -34,6 +35,9 @@ export const Logo=styled.div`
     font-family:"JSArirang";
     font-size:3rem;
     cursor: pointer;
+    @media screen and (max-width:1000px){
+        font-size:2rem;
+    }
 `
 export const NavList=styled.ul<{isMenuOpened:boolean}>`
     display:flex;
@@ -46,13 +50,13 @@ export const NavList=styled.ul<{isMenuOpened:boolean}>`
     @media screen and (max-width:1000px){
         margin-right:2rem;
      i{
-         margin-top:0.5rem;
+        margin-top:0.1rem;
         display:block;
-        font-size:2rem;
+        font-size:1rem;
         margin-bottom:1rem;
         
     }
-        height:${({isMenuOpened})=>isMenuOpened?"10rem":"2.5rem"};
+        height:${({isMenuOpened})=>isMenuOpened?"10rem":"2rem"};
         transition: width 1s, height 0.5s;
         overflow-y:hidden;
         position:absolute;

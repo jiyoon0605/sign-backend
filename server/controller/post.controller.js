@@ -6,6 +6,14 @@ const mongoose = require("mongoose");
 const postSchema = require("../schemas/post");
 let jwt = require("jsonwebtoken");
 const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+const fileUploadMiddleware = require("../middleware/fileUpload");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 const getDateString = (d) => {
   const date = d;
@@ -52,11 +60,13 @@ const dataFilter = (posts) => {
     }
   });
 };
+
 const upload = (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
     if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
     else {
+      fileUploadMiddleware(req, res);
       const finalImg = {
         filename: req.file.filename,
         contentType: req.file.mimetype,

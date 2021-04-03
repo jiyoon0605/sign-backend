@@ -40,6 +40,7 @@ const loginReducer=(state:State="init",action:LoginActionType):State=>{
 
 
 function* request(action:LoginActionType){
+    console.log("request");
     try{
         const client=axios.create({
             baseURL:"https://dsm-sign.herokuapp.com",

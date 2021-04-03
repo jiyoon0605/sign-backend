@@ -191,16 +191,19 @@ export const CategoryContainer=styled.nav`
     margin-bottom:5rem;
     background-color:black;
     color:white;
+    overflow-x:scroll;
 `;
 
 export const NavButton=styled.button`
     width:6rem;
     height:100%;
     border:none;
-    padding:0 1rem;
+    /* padding:0 1rem; */
 
     background-color:black;
     color:white;
+
+    word-break:keep-all;
     
     display:flex;
     justify-content:center;
@@ -210,7 +213,8 @@ export const NavButton=styled.button`
         background-color:rgba(200,200,200,0.5);
     }
     @media screen and (max-width:1000px){
-        font-size:.3rem;
+          width:6rem;
+        font-size:.8rem;
     }
 `;
 
