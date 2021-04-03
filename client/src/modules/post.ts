@@ -70,25 +70,28 @@ const postReducer=(state:PostType={result:"no started"},action:PostActionType):P
 }
 
 function* postListRequest(action:PayloadAction<CategoryType>){
-    try{
-        if(action.payload==="all"){
+
+    if(action.payload==="all"){
+        try{
             const {data} = yield call([getRequest(),"get"],`/post/`);
             yield put(requestSuccess({
             result:"list",
-            data
-         }));
-        }else{
+            data}))
+        }catch(err){
+            alert("게시물을 불러오지 못했습니다.");
+        }
+    }
+    else{
+        try{
             const {data}=yield call([getRequest(),"get"],`/post/category/${action.payload}`);
             yield put(requestSuccess({
                 result:"list",
                 data
-            }));
-        } 
-
-         
-    }
-    catch(err){
-        alert(err.response.data.error);
+            }));   
+        }catch(err){
+            alert("게시물을 불러오지 못했습니다.");
+        }
+        
     }
 }
 
