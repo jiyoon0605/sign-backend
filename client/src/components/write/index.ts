@@ -1,2 +1,2 @@
-import Write from './write';
+import Write from './writeContainer';
 export default Write;

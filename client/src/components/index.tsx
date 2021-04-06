@@ -13,6 +13,7 @@ import {useDispatch, useSelector}from 'react-redux';
 import { RootState} from 'modules';
 import Post from 'components/post';
 import PostDetail from 'components/postDetail';
+import Mypage from 'components/mypage';
 
 const Container:React.FC=()=>{
     const history=useHistory();
@@ -47,7 +48,7 @@ const Container:React.FC=()=>{
                
                 <S.NavList isMenuOpened={isMenuOpened}>
                 <i className="fas fa-bars" onClick={()=>setIsmenuOpened(!isMenuOpened)}></i>
-                    <S.NavItem onClick={()=>history.push("/post")}>전체 게시물</S.NavItem>
+                    <S.NavItem onClick={()=>history.push("/mypage")}>마이페이지</S.NavItem>
                     <S.NavItem onClick={()=>history.push("/write")}>글쓰기</S.NavItem>
                     <S.NavItem onClick={()=>{
                         if(localStorage.getItem("accessToken")){
@@ -63,7 +64,8 @@ const Container:React.FC=()=>{
                 </S.NavList>
             </S.Header>
         <S.Container>
-            <Switch>           
+            <Switch>
+                <Route exact path="/mypage" component={Mypage}/>
                 <Route exact path="/post"component={Post}/>
                 <Route exact path="/register" component={Register}/>
                 <Route exact path="/login"component={Login}/>

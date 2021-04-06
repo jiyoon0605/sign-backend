@@ -1,14 +1,19 @@
 import React from 'react';
 import * as S from 'style/post'
 import { CategoryType } from 'modules/post'
+import { DataType } from 'components/post/postContainer';
+import PopularPost from './popularPost'
+
 type Props={
     setAlign:(s:string)=>void,
     onCategortyChange:(s:CategoryType)=>void,
-    list:JSX.Element[]
+    list:JSX.Element[],
+    popular:DataType[],
 }
 
-const PostPresenter:React.FC<Props>=({setAlign,onCategortyChange,list})=>{
+const PostPresenter:React.FC<Props>=({setAlign,onCategortyChange,list,popular})=>{
     return <S.Container>
+            {popular.length>0&&<PopularPost data={popular[0]}></PopularPost>}
         <S.CategoryContainer>
             <S.SelectButton defaultValue="latest" 
                     onChange={(e)=>{
@@ -25,6 +30,7 @@ const PostPresenter:React.FC<Props>=({setAlign,onCategortyChange,list})=>{
             <S.NavButton onClick={()=>onCategortyChange("individ")}>개인</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("area")}>지역</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("other")}>기타</S.NavButton>
+            
         </S.CategoryContainer>
          <S.PostContainer>
         {list}

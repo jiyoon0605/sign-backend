@@ -42,7 +42,7 @@ function* request(action:RegisterActionTypes){
     const data=action.payload;
     try{
         const client=axios.create({
-            baseURL:"https://dsm-sign.herokuapp.com",
+         //   baseURL:"https://dsm-sign.herokuapp.com",
         });
         yield call([client,"post"],"/auth/register",data);
         yield put(registerSuccess());

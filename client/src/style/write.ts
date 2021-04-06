@@ -1,18 +1,21 @@
 import styled from 'styled-components';
 
 export const Container=styled.div`
-    margin-top:10rem;
+
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    background-color:#00000011;
 `;
 
 export const ContainerBox=styled.div`
     width:750px;
-    box-shadow:2px 2px 5px 0 rgba(0,0,0,0.5);
-
-
+    background-color:white;
+    margin-top:10rem;
+    border-radius:5px;
+    border:none;
+    border:1px solid #00000055;
 
     @media screen and (max-width:1000px){
         width:100%;
@@ -45,8 +48,9 @@ export const SubmitBtn=styled.div`
 `;
 
 export const ImageContainer=styled.img`
-    width:100%;
+    width:90%;
     height:400px;
+    margin-left:2rem;
     background-color:grey;
 
     object-fit:cover;
@@ -64,8 +68,8 @@ export const ImgLabel=styled.label`
     width:130px;
     height:30px;
 
-    margin-top:25px;
-    margin-left:30px;
+    margin:2rem 0;
+    margin-left:2rem;
 
     background-color:#FF4141;
 
@@ -94,12 +98,13 @@ export const ContentsContainer=styled.div`
 `;
 export const TextInput=styled.input`
     width:90%;
-    height:2rem;
+    height:3rem;
     font-size:1rem;
     font-family:"Medium";
 
+    border-radius:5px;
     border:none;
-    border-bottom:1px solid #FF414188;
+    border:1px solid #00000055;
 
     box-sizing:border-box;
     padding:0 10px;
@@ -109,8 +114,12 @@ export const TextInput=styled.input`
 export const ContentsInput=styled.textarea`
     resize:none;
     width:90%;
-    height:2.5rem;
-    border:1px solid #FF414188;
+    height:8rem;
+
+    border-radius:5px;
+    border:none;
+    border:1px solid #00000055;
+
     font-size:15px;
     font-family:"Medium";
 
@@ -118,15 +127,22 @@ export const ContentsInput=styled.textarea`
     padding:10px;
     margin:1rem;
 
-    overflow:hidden;
+    overflow:scroll;
 `;
 
 export const CategoryContainer=styled.select`
-width:90%;
-height:2.5rem;
+    width:90%;
+    height:3rem;
 
-margin:1rem;
-border:1px solid #FF411488;
+    margin:1rem;
+    border-radius:5px;
+    border:none;
+    border:1px solid #00000055;
+    background-color:white;
+    option{
+        background-color:white;
+    }
+    
 
 box-sizing:border-box;
 padding:.5rem;

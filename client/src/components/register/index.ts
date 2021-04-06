@@ -1,2 +1,2 @@
-import Register from './register'
+import Register from './registerContainer'
 export default Register;

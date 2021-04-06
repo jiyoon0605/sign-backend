@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Container=styled.div`
     width:100vw;
-    height:100rem;
+    height:150rem;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -70,6 +70,7 @@ export const ItemContainer=styled.article`
     height:15rem;
 
     margin:1rem;
+
     box-shadow:2px 2px 3px 0 rgba(0,0,0,0.5);
 
     display:flex;
@@ -198,6 +199,8 @@ export const NavButton=styled.button`
     width:6rem;
     height:100%;
     border:none;
+
+    margin:.5rem 0;
     /* padding:0 1rem; */
 
     background-color:black;
@@ -221,6 +224,7 @@ export const NavButton=styled.button`
 export const CategoeyBox=styled.div`
 
     width:3rem;
+
     display:flex;
     justify-content:center;
     align-items:center;
@@ -245,6 +249,69 @@ export const Termination=styled.div`
     font-family:"Bold";
     color:#FF4141;
 `
+//
+//
+//popularity
+export const PopularContainer=styled.div`
+    width:70rem;
+    height:28rem;
+    margin-bottom:5rem;
+    
+    display:flex;
+
+    @media screen and (max-width:1000px){
+        width:100%;
+        position:relative;
+        flex-direction:column;
+    }
+
+`;
+
+export const PopularImg=styled.img`
+    height:100%;
+    width:55rem;
+    object-fit:cover;
+
+    @media screen and (max-width:1000px){
+        width:100%;
+        height:20rem;
+    }
+`;
+
+export const PopularInfo=styled.div`
+    height:100%;
+    width:25rem;
+    color:white;
+    display:flex;
+    flex-direction:column;
+
+    box-sizing:border-box;
+    padding:7rem 1rem 0 1rem;
+    
+    h1{
+        color:white;
+        width:13rem;
+        margin:0;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        word-wrap: break-word;
+        overflow:hidden; 
+        text-overflow:ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient: vertical;
+    }
+    background-color:#000000;
+
+    @media screen and (max-width:1000px){
+        width:100%;
+        height:15rem;
+        padding:0;
+        padding-left:1rem;
+        padding-bottom:1rem;
+    }
+`;
+
 
 //
 //
@@ -253,6 +320,7 @@ export const FooterContainer=styled.footer`
     margin-top:10rem;
     width:100vw;
     height:15rem;
-    box-shadow:-2px -2px 3px 0 rgba(0,0,0,0.5);
+    box-shadow:-1px -1px 2px 0 rgba(0,0,0,0.5);
     background-color:black;
 `;
+

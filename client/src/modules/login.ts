@@ -43,7 +43,7 @@ function* request(action:LoginActionType){
     console.log("request");
     try{
         const client=axios.create({
-            baseURL:"https://dsm-sign.herokuapp.com",
+         //   baseURL:"https://dsm-sign.herokuapp.com",
         });
         const {data} = yield call([client,"post"],"/auth/login",action.payload);
          yield put(loginSuccess());     

@@ -203,6 +203,52 @@ const remove = (req, res) => {
   });
 };
 
+const getMyPost = (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
+    if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
+    else {
+      postSchema.find({ writerId: decoded.id }, (err, post) => {
+        if (err) return res.status(404).send(err);
+        else if (post === null)
+          return res.status(201).send({ message: "작성한 포스트가 없습니다." });
+        res.status(201).send(post);
+      });
+    }
+  });
+};
+
+const getAgreePost = (req, res) => {
+  const token = req.headers.authorization.split("Bearer ")[1];
+  jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
+    if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
+    else {
+      postSchema
+        .find({})
+        .then((posts) => {
+          let resultPosts = [];
+          posts.map((post) => {
+            let result = false;
+            for (let l of post.list) {
+              if (l.writerId == decoded.id) {
+                result = true;
+                break;
+              }
+            }
+            if (result) resultPosts.push(post);
+          });
+
+          return resultPosts;
+        })
+        .then((posts) => {
+          if (posts.length <= 0)
+            return res.status(201).send({ message: "동의한 글이 없습니다." });
+          else return res.status(201).send({ posts });
+        });
+    }
+  });
+};
+
 module.exports = {
   upload,
   getList,
@@ -211,4 +257,6 @@ module.exports = {
   getCategory,
   signOn,
   remove,
+  getMyPost,
+  getAgreePost,
 };

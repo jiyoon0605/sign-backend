@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PostItem from 'components/post/postItem';
 
 import { RootState} from 'modules';
@@ -30,7 +30,6 @@ const Post:React.FC=()=>{
     const state=useSelector((state:RootState)=>state.postReducer);
     const dispatch = useDispatch();
 
-
     function ratesAlign(pre:DataType,cur:DataType) {
         const prePer=Math.round((pre.list.length/pre.goalNum)*100);
         const curPer=Math.round((cur.list.length/cur.goalNum)*100);
@@ -54,7 +53,6 @@ const Post:React.FC=()=>{
     
 
     useEffect(() => {
-
         const list=data.slice();
         const sortedList=align==="latest"?data.map((e,i)=><PostItem key={i} data={e}/>):
         align==="rates"?list.sort(ratesAlign).map((e,i)=><PostItem key={i} data={e}/>):
@@ -62,8 +60,13 @@ const Post:React.FC=()=>{
         setList(sortedList);
     }, [align, state, data])
 
+    const getPopular=()=>{
+        const popularList=data.slice();
+        return popularList.sort(ratesAlign);
+    }
 
-    return <PostPresenter setAlign={setAlign} onCategortyChange={onCategortyChange} list={list}/>
+    return <PostPresenter setAlign={setAlign} onCategortyChange={onCategortyChange} list={list}
+                            popular={getPopular()}/>
     
 };
 

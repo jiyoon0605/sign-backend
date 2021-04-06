@@ -5,7 +5,8 @@ import {  call,  put, takeLatest } from "redux-saga/effects";
 export interface UserData{
     result?:"request"
     name:string,
-    id:string
+    id:string,
+    email:string
 };
 
 const USERDATA_REQUEST="USERDATA_REQUEST";
@@ -21,7 +22,8 @@ type UserDataActionType=PayloadAction<UserData>;
 
 const userDataReducer=(state:UserData|undefined={
         name:"",
-        id:""
+        id:"",
+        email:""
 },action:UserDataActionType):UserData=>{
     switch(action.type){
         case USERDATA_SUCCESS:
@@ -30,7 +32,8 @@ const userDataReducer=(state:UserData|undefined={
             console.log("reset");
             return {
                 name:"",
-                id:""
+                id:"",
+                email:""
             }
         default:
             return state;
@@ -43,10 +46,11 @@ function* request(){
     try{
         if(localStorage.getItem("accessToken")){
             const {data}=yield call([getRequest(),"get"],"/auth/userData");
-            const {id,name}=data.data;
+            const {_id,name,email}=data.data;
             yield put(userDataSuccess({
-                id,
-                name
+                id:_id,
+                name,
+                email
             }))
         }
 

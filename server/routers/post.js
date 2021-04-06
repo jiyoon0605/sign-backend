@@ -33,4 +33,7 @@ router.get("/sign/:id", controller.signOn);
 
 router.delete("/:id", controller.remove);
 
+router.get("/mypage/post", controller.getMyPost);
+router.get("/mypage/agree", controller.getAgreePost);
+
 module.exports = router;

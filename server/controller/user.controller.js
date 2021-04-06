@@ -135,7 +135,9 @@ const userData = (req, res) => {
   const token = req.headers.authorization.split("Bearer ")[1];
   jwt.verify(token, process.env.SECRETKEY, (err, decoded) => {
     if (err) res.status(404).send({ message: "올바른 토큰이 아닙니다." });
-    else res.status(201).send({ data: decoded });
+    userSchema.findOne({ _id: decoded.id }).then((data) => {
+      res.status(201).send({ data });
+    });
   });
 };
 module.exports = {

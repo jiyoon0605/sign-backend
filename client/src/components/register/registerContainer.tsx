@@ -1,5 +1,5 @@
 import React,{useState,useReducer,useEffect} from 'react';
-import * as S from 'style/auth';
+import RegisterPresenter from './registerPresenter'
 import {registerComplate, registerRequest}from 'modules/register';
 
 import {useDispatch, useSelector}from 'react-redux';
@@ -7,21 +7,21 @@ import { RootState} from 'modules';
 import {useHistory}from 'react-router'
 import axios from 'axios';
 
-interface registerType{
+export interface RegisterType{
     email:string,
     authNum:string,
     name:string,
     password:string,
     isSamePasword:boolean
 };
-interface actionType{
+export interface ActionType{
     type:"EMAIL"|"NAME"|"PASSWORD"|"PASSWORDCONFIRM"|"AUTHNUM";
     data:string
 };
 
 
 
-const Regiter:React.FC=()=>{
+const RegiterContainer:React.FC=()=>{
     const dispatch=useDispatch();
     const state=useSelector((state:RootState)=>state.registerReducer);
     const histroy=useHistory();
@@ -36,7 +36,7 @@ const Regiter:React.FC=()=>{
         }
     },[dispatch, histroy, state])
 
-    const reducer=(state:registerType,action:actionType):registerType=>{
+    const reducer=(state:RegisterType,action:ActionType):RegisterType=>{
         switch(action.type){
             case "EMAIL":
                 return {...state,email:action.data};
@@ -53,7 +53,7 @@ const Regiter:React.FC=()=>{
         }
     }
 
-    const initalData:registerType={
+    const initalData:RegisterType={
         email:"",
         authNum:"",
         name:"",
@@ -103,21 +103,7 @@ const Regiter:React.FC=()=>{
     }
 
 
-    return <S.Container>
-        <S.Title>계정 생성</S.Title>
-        <span>
-        <S.InputEmail placeholder="이메일"value={registerData.email} onChange={e=>setRegisterData({type:"EMAIL",data:e.target.value})}/>
-        <S.EmailBtn onClick={requestAuthNum}>인증번호 발송</S.EmailBtn>
-        </span>
-        <S.InputField placeholder="인증번호" value={registerData.authNum} onChange={e=>setRegisterData({type:"AUTHNUM",data:e.target.value})}/>
-        <S.InputField placeholder="이름"value={registerData.name} onChange={e=>setRegisterData({type:"NAME",data:e.target.value})}/>
-        <S.InputField type="password" placeholder="비밀번호" value={registerData.password} onChange={e=>setRegisterData({type:"PASSWORD",data:e.target.value})}/>
-        <S.InputField type="password" placeholder="비밀번호 확인" onChange={e=>setRegisterData({type:"PASSWORDCONFIRM",data:e.target.value})}
-                    onKeyUp={(e)=>{if(e.key === "Enter") onHandleClick()}}/>
-        <S.SubmitButton onClick={onHandleClick}>
-            시작하기
-        </S.SubmitButton>
-    </S.Container>
+    return <RegisterPresenter registerData={registerData} requestAuthNum={requestAuthNum} setRegisterData={setRegisterData} onHandleClick={onHandleClick}/>
 }
 
-export default  Regiter;
+export default  RegiterContainer;
