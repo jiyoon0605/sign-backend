@@ -57,7 +57,12 @@ function* request(){
     }
     catch(err){
         if(err.response){
-            alert(err.response.data.message);
+            alert("로그아웃 되었습니다.");
+            yield put(userDataSuccess({
+                id:"",
+                name:"",
+                email:""
+            }))
             localStorage.removeItem("accessToken");
         }
         

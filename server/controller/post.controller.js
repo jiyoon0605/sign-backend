@@ -23,41 +23,57 @@ const getDateString = (d) => {
 
   return `${year}-${month}-${day}`;
 };
-const dataFilter = (posts) => {
+const dataFilter = async (posts, res) => {
   const date = getDateString(new Date());
 
-  const deleteList = posts.filter((e, i) => {
-    const tDate = new Date(e.endDate);
-    tDate.setDate(tDate.getDate() + 10);
-    const endDate = getDateString(tDate);
-    if (endDate < date) return e;
-  });
+  const deleteList = posts
+    .filter((e, i) => {
+      const tDate = new Date(e.endDate);
+      tDate.setDate(tDate.getDate() + 10);
+      const endDate = getDateString(tDate);
+      if (endDate < date) return e;
+    })
+    .slice();
 
-  deleteList.map((e, i) => {
-    postSchema.findOneAndRemove({ _id: e.id }, (err, post) => {
-      if (err || post === null)
-        return res.status(404).send({ error: "게시물이 존재하지 않습니다." });
-      else {
-        console.log(post.img.filename);
-        if (post.img) {
-          fs.unlink(`uploads/${post.img.filename}`, (err) => {
-            if (err) return res.status(500).json({ message: "Delete Fail!" });
-          });
+  try {
+    await deleteList.map(async (e, i) => {
+      await postSchema.findOneAndRemove({ _id: e.id }, (err, post) => {
+        if (err || post === null)
+          return res.status(404).send({ error: "게시물이 존재하지 않습니다." });
+        else {
+          if (post.img) {
+            fs.unlink(`uploads/${post.img.filename}`, (err) => {
+              if (err) return res.status(500).json({ message: "Delete Fail!" });
+            });
+          }
         }
+      });
+    });
+    await posts.map(async (e, i) => {
+      console.log(e.endDate < date);
+      if (e.endDate < date) {
+        await postSchema.updateOne(
+          { _id: e.id },
+          { activation: false },
+          (err, result) => {
+            if (err) return res.status(404).send({ error: err });
+          }
+        );
       }
     });
-  });
+    await console.log(posts.activation);
+    postSchema.find({}, (err, posts) => {
+      res.status(200).send(posts);
+    });
+  } catch (err) {
+    res.status(404).send("게시물 전체 조회 실패.");
+  }
+};
 
-  posts.map((e, i) => {
-    if (e.endDate < date) {
-      postSchema.updateOne(
-        { _id: e.id },
-        { activation: false },
-        (err, result) => {
-          if (err) return res.status(404).send({ error: err });
-        }
-      );
-    }
+const getList = (req, res) => {
+  postSchema.find({}, (err, posts) => {
+    if (err) return res.status(500).send("게시물 전체 조회 실패.");
+    dataFilter(posts, res);
   });
 };
 
@@ -97,20 +113,14 @@ const upload = (req, res) => {
     }
   });
 };
-const getList = (req, res) => {
-  postSchema.find({}, function (err, posts) {
-    if (err) return res.status(500).send("게시물 전체 조회 실패.");
-    dataFilter(posts);
-    res.status(200).send(posts);
-  });
-};
+
 const getImg = (req, res) => {
   postSchema.find(
     {
       _id: req.body.id,
     },
     (err, posts) => {
-      if (err || !posts[0].img) return res.status(404).send("이미지 정보 없음");
+      if (err || !posts[0]) return res.status(404).send("게시물 정보 없음");
       if (posts[0].img) {
         fs.readFile(`uploads/${posts[0].img.filename}`, (err, data) => {
           res.status(200).send({
