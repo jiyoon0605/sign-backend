@@ -1,7 +1,7 @@
 import React, { useEffect, useState,useMemo } from 'react';
 import getRequest from 'api';
 import {useHistory} from 'react-router';
-import {DataType}from '../postContainer'
+import {DataType}from '../post/postContainer'
 
 import PostItemPresenter from './postItemPresenter'
 

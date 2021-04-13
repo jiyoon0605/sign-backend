@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PostItem from 'components/post/postItem';
+import React, { useEffect, useState } from 'react';
+import PostItem from 'components/postItem';
 
 import { RootState} from 'modules';
 import { useDispatch,useSelector } from 'react-redux';

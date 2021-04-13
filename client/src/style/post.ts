@@ -192,15 +192,19 @@ export const CategoryContainer=styled.nav`
     margin-bottom:5rem;
     background-color:black;
     color:white;
-    overflow-x:scroll;
+    
 `;
-
+export const ScrollContainer=styled.div`
+    width:100%;
+    height:100%;
+    display:flex;
+    overflow-x:scroll;
+`
 export const NavButton=styled.button`
     width:6rem;
     height:100%;
     border:none;
 
-    margin:.5rem 0;
     /* padding:0 1rem; */
 
     background-color:black;
@@ -269,7 +273,7 @@ export const PopularContainer=styled.div`
 
 export const PopularImg=styled.img`
     height:100%;
-    width:55rem;
+    width:50rem;
     object-fit:cover;
 
     @media screen and (max-width:1000px){

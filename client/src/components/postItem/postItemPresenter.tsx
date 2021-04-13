@@ -1,7 +1,7 @@
 import React  from 'react'
 import * as S from 'style/post'
 //import ProgressBar from "";
-import {DataType}from '../postContainer'
+import {DataType}from '../post/postContainer'
 import Progerssbar from './progress'
 
 type Props={

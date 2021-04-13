@@ -23,6 +23,7 @@ const PostPresenter:React.FC<Props>=({setAlign,onCategortyChange,list,popular})=
             <option value="random">랜덤순</option>
             <option value="rates">동의율 순</option>
             </S.SelectButton>
+            <S.ScrollContainer>
             <S.NavButton onClick={()=>onCategortyChange("all")}>전체</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("game")}>게임</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("enter")}>연예</S.NavButton>
@@ -30,6 +31,8 @@ const PostPresenter:React.FC<Props>=({setAlign,onCategortyChange,list,popular})=
             <S.NavButton onClick={()=>onCategortyChange("individ")}>개인</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("area")}>지역</S.NavButton>
             <S.NavButton onClick={()=>onCategortyChange("other")}>기타</S.NavButton>
+            </S.ScrollContainer>
+            
             
         </S.CategoryContainer>
          <S.PostContainer>

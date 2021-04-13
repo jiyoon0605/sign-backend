@@ -50,7 +50,6 @@ const dataFilter = async (posts, res) => {
       });
     });
     await posts.map(async (e, i) => {
-      console.log(e.endDate < date);
       if (e.endDate < date) {
         await postSchema.updateOne(
           { _id: e.id },
@@ -198,7 +197,6 @@ const remove = (req, res) => {
     if (err) res.status(404).send({ error: "올바른 토큰이 아닙니다." });
     else {
       postSchema.findOneAndRemove({ _id: req.params.id }, (err, post) => {
-        console.log(post.title);
         if (err || post === null)
           return res.status(404).send({ error: "게시물이 존재하지 않습니다." });
         else {
@@ -253,7 +251,7 @@ const getAgreePost = (req, res) => {
         .then((posts) => {
           if (posts.length <= 0)
             return res.status(201).send({ message: "동의한 글이 없습니다." });
-          else return res.status(201).send({ posts });
+          else return res.status(201).send(posts);
         });
     }
   });
